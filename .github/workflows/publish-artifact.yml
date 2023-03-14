@@ -48,7 +48,7 @@ jobs:
           BUILD_RUN_ATTEMPT: ${{ github.run_attempt }}
           GITHUB_ACTOR: ${{ secrets.GITHUB_ACTOR }}
           # I don't understand why the default token is not sufficient
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.VCS_PERSONAL_TOKEN }}
 
       - name: Slack Notification
         uses: rtCamp/action-slack-notify@v2

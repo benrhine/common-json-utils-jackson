@@ -52,18 +52,18 @@ jobs:
       os: ${{ matrix.os }}
       gradle-version: ${{ matrix.gradle-version }}
 
-#  windows-setup-gradle-environment:
-#    if: github.event.pull_request.draft == false
-#    strategy:
-#      matrix:
-#        os: [ windows-latest ]
-#        gradle-version: [ "7.6", "7.6.1" ]
-#      fail-fast: false
-#    uses: benrhine/common-json-utils-jackson/.github/workflows/setup-gradle-environment.yml@main
-#    with:
-#      os: ${{ matrix.os }}
-#      gradle-version: ${{ matrix.gradle-version }}
-#
+  windows-setup-gradle-environment:
+    if: github.event.pull_request.draft == false
+    strategy:
+      matrix:
+        os: [ windows-latest ]
+        gradle-version: [ "7.6", "7.6.1" ]
+      fail-fast: false
+    uses: benrhine/common-json-utils-jackson/.github/workflows/setup-gradle-environment.yml@main
+    with:
+      os: ${{ matrix.os }}
+      gradle-version: ${{ matrix.gradle-version }}
+
 #  windows-unit-test-gradle-environment:
 #    needs: windows-setup-gradle-environment
 #    strategy:
@@ -87,19 +87,19 @@ jobs:
 #    with:
 #      os: ${{ matrix.os }}
 #      gradle-version: ${{ matrix.gradle-version }}
-#
-#  macos-setup-gradle-environment:
-#    if: github.event.pull_request.draft == false
-#    strategy:
-#      matrix:
-#        os: [ macos-latest ]
-#        gradle-version: [ "7.6", "7.6.1" ]
-#      fail-fast: false
-#    uses: benrhine/common-json-utils-jackson/.github/workflows/setup-gradle-environment.yml@main
-#    with:
-#      os: ${{ matrix.os }}
-#      gradle-version: ${{ matrix.gradle-version }}
-#
+
+  macos-setup-gradle-environment:
+    if: github.event.pull_request.draft == false
+    strategy:
+      matrix:
+        os: [ macos-latest ]
+        gradle-version: [ "7.6", "7.6.1" ]
+      fail-fast: false
+    uses: benrhine/common-json-utils-jackson/.github/workflows/setup-gradle-environment.yml@main
+    with:
+      os: ${{ matrix.os }}
+      gradle-version: ${{ matrix.gradle-version }}
+
 #  macos-unit-test-gradle-environment:
 #    needs: macos-setup-gradle-environment
 #    strategy:

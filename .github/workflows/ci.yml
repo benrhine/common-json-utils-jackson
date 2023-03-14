@@ -39,10 +39,6 @@ jobs:
           server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
           settings-path: ${{ github.workspace }} # location for the settings.xml file
           cache: gradle
-        secrets: inherit
-
-      - name: Build with Gradle
-        run: ./gradlew test
 
   ubuntu-unit-test-gradle-environment:
     needs: ubuntu-setup-gradle-environment
@@ -55,7 +51,6 @@ jobs:
     steps:
       - name: Build with Gradle
         run: ./gradlew test
-    secrets: inherit
 
   windows-setup-gradle-environment:
     if: github.event.pull_request.draft == false
@@ -80,7 +75,6 @@ jobs:
           server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
           settings-path: ${{ github.workspace }} # location for the settings.xml file
           cache: gradle
-        secrets: inherit
 
       - name: Build with Gradle
         run: ./gradlew test
@@ -108,7 +102,6 @@ jobs:
           server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
           settings-path: ${{ github.workspace }} # location for the settings.xml file
           cache: gradle
-        secrets: inherit
 
       - name: Build with Gradle
         run: ./gradlew test

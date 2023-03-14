@@ -27,7 +27,7 @@ jobs:
         os: [ ubuntu-latest ]
         gradle-version: [ "7.6", "7.6.1" ]
       fail-fast: false
-    uses: actions/setup-gradle-environment
+    uses: actions/setup-gradle-environment@v1
     with:
       os: ${{ matrix.os }}
       gradle-version: ${{ matrix.gradle-version }}
@@ -39,7 +39,7 @@ jobs:
         os: [ ubuntu-latest ]
         gradle-version: [ "7.6", "7.6.1" ]
       fail-fast: false
-    uses: actions/unit-test
+    uses: actions/unit-test@v1
     with:
       os: ${{ matrix.os }}
       python-version: ${{ matrix.python-version }}

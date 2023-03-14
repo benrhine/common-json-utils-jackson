@@ -50,7 +50,7 @@ jobs:
 
     steps:
       - name: Setup environment
-        uses: actions/setup-gradle-environment
+        uses: actions/setup-gradle-environment@v1
         with:
           gradle-version: ${{ inputs.gradle-version }}
           os: ${{ inputs.os }}

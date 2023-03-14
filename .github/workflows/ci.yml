@@ -16,6 +16,10 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  setup-gradle-environment:
+    uses: benrhine/common-json-utils-jackson/.github/workflows/setup-gradle-environment.yml@main
+  unit-test:
+    uses: benrhine/common-json-utils-jackson/.github/workflows/unit-test.yml
   ubuntu-setup-gradle-environment:
     if: github.event.pull_request.draft == false
     strategy:
@@ -23,7 +27,7 @@ jobs:
         os: [ ubuntu-latest ]
         gradle-version: [ "7.6", "7.6.1" ]
       fail-fast: false
-    uses: benrhine/common-json-utils-jackson/.github/workflows/setup-gradle-environment.yml@main
+    uses: actions/setup-gradle-environment
     with:
       os: ${{ matrix.os }}
       gradle-version: ${{ matrix.gradle-version }}
@@ -35,7 +39,7 @@ jobs:
         os: [ ubuntu-latest ]
         gradle-version: [ "7.6", "7.6.1" ]
       fail-fast: false
-    uses: benrhine/common-json-utils-jackson/.github/workflows/unit-test.yml
+    uses: actions/unit-test
     with:
       os: ${{ matrix.os }}
       python-version: ${{ matrix.python-version }}

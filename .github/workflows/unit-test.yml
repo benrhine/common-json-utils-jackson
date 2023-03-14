@@ -33,8 +33,7 @@ on:
         default: '7.6'
 
 jobs:
-  lint-unit-tests:
-    name: lint-unit-tests
+  unit-tests:
     runs-on: ${{ inputs.os }}
     env:
       # on MAC OS, we need to set this environment variable
@@ -67,11 +66,11 @@ jobs:
 #          gradle-version: ${{ inputs.gradle-version }}
 #          os: ${{ inputs.os }}
 
-      - name: Build with Gradle
+      - name: Unit Test with Gradle
         run: ./gradlew test
 
-      - name: Archive test report
+      - name: Archive unit test report
         uses: actions/upload-artifact@v3
         with:
-          name: Test report
+          name: Unit Test report
           path: build/reports/tests/test

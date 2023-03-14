@@ -1,0 +1,32 @@
+name: "Configure Gradle Wrapper"
+description: "Download and configure the desired gradle wrapper"
+inputs:
+  cache_version:
+    description: 'TODO figure out if this owrks for me'
+    required: true
+  gradle-version:
+    description: 'Gradle version'
+    type: string
+    required: true
+  os:
+    description: 'OS'
+    type: string
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v3
+    - name: Set Gradle Version
+      run: ./gradlew wrapper --gradle-version=${{ inputs.gradle-version }}
+    - name: Verify Gradle Version Set
+      run: ./gradlew -v
+    - uses: gradle/wrapper-validation-action@v1
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'corretto' # List of supported jvms https://github.com/actions/setup-java
+        server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
+        settings-path: ${{ github.workspace }} # location for the settings.xml file
+        cache: gradle

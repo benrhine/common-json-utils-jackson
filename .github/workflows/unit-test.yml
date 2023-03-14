@@ -33,6 +33,8 @@ on:
         default: '7.6'
 
 jobs:
+  setup-gradle-environment:
+    uses: benrhine/common-json-utils-jackson/.github/workflows/setup-gradle-environment.yml@main
   lint-unit-tests:
     name: lint-unit-tests
     runs-on: ${{ inputs.os }}
@@ -48,7 +50,7 @@ jobs:
 
     steps:
       - name: Setup environment
-        uses: benrhine/common-json-utils-jackson/.github/workflows/setup-gradle-environment.yml@main
+        uses: actions/setup-gradle-environment
         with:
           gradle-version: ${{ inputs.gradle-version }}
           os: ${{ inputs.os }}

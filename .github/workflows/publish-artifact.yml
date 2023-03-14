@@ -1,23 +1,18 @@
 name: Unit Test & Upload Coverage
 
 on:
-  status:
-
-
-#  workflow_run:
-#    workflows: [ 'Build, Lint, Unit Test, Integration Test, and Publish']
-#    types:
-#      - completed
+  workflow_run:
+    workflows: [ 'Build, Lint, Unit Test, Integration Test, and Publish']
+    types:
+      - completed
 
 jobs:
-  publish-artifact:
+  on-success-publish:
     runs-on: ubuntu-latest
-    if: >-
-      github.event.state == 'success'
-    defaults:
-      run:
-        shell: bash
-
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+#    defaults:
+#      run:
+#        shell: bash
     steps:
       - uses: actions/checkout@v3
       - uses: gradle/wrapper-validation-action@v1
@@ -62,5 +57,20 @@ jobs:
           SLACK_ICON: https://github.com/rtCamp.png?size=48
           SLACK_MESSAGE: You may now include | com.benrhine:common-json-utils-jackson:${{ env.app_version }}
           SLACK_TITLE: New ARTIFACT available
+          SLACK_USERNAME: RhineConsulting
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+  on-failure-alert:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    steps:
+      - run: echo 'The triggering workflow failed'
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          #        SLACK_CHANNEL: general
+          SLACK_COLOR: ${{ job.status }} # or a specific color like 'good' or '#ff00ff'
+          SLACK_ICON: https://github.com/rtCamp.png?size=48
+          SLACK_MESSAGE: Failed to build | com.benrhine:common-json-utils-jackson:${{ env.app_version }}
+          SLACK_TITLE: FAILED TO BUILD ARTIFACT
           SLACK_USERNAME: RhineConsulting
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}

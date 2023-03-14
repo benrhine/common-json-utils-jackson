@@ -47,14 +47,11 @@ jobs:
         shell: bash
 
     steps:
-      - uses: actions/checkout@v3
-
-#      - name: Setup environment
-#        uses: ./.github/actions/setup_environment
-#        with:
-#          cache_version: ${{ secrets.GH_ACTIONS_CACHE_KEY }}
-#          python-version: ${{ inputs.python-version }}
-#          os: ${{ inputs.os }}
+      - name: Setup environment
+        uses: benrhine/common-json-utils-jackson/.github/workflows/setup-gradle-environment.yml@main
+        with:
+          gradle-version: ${{ inputs.gradle-version }}
+          os: ${{ inputs.os }}
 
       - name: Build with Gradle
         run: ./gradlew test

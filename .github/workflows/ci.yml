@@ -17,11 +17,8 @@ concurrency:
 
 jobs:
   ubuntu-setup-gradle-environment:
+    if: github.event.pull_request.draft == false
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-
     steps:
       - uses: actions/checkout@v3
       - uses: gradle/wrapper-validation-action@v1

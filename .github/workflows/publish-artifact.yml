@@ -1,15 +1,19 @@
 name: Unit Test & Upload Coverage
 
 on:
-  workflow_run:
-    workflows: [ 'Build, Lint, Unit Test, Integration Test, and Publish']
-    types:
-      - success
+  status:
+
+
+#  workflow_run:
+#    workflows: [ 'Build, Lint, Unit Test, Integration Test, and Publish']
+#    types:
+#      - completed
 
 jobs:
   publish-artifact:
     runs-on: ubuntu-latest
-
+    if: >-
+      github.event.state == 'success'
     defaults:
       run:
         shell: bash

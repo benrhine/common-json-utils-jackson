@@ -16,7 +16,6 @@ jobs:
   setup:
     name: setup
     runs-on: ${{ inputs.os }}
-    env:
 
     steps:
       - uses: actions/checkout@v3

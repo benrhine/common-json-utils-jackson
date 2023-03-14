@@ -23,7 +23,7 @@ jobs:
         os: [ ubuntu-latest ]
         gradle-version: [ "7.6", "7.6.1" ]
       fail-fast: false
-    uses: .github/workflows/actions/setup-gradle-environment.yml
+    uses: ./.github/workflows/setup-gradle-environment.yml@main
     with:
       os: ${{ matrix.os }}
       gradle-version: ${{ matrix.gradle-version }}
@@ -37,7 +37,7 @@ jobs:
       fail-fast: false
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: .github/workflows/actions/setup-gradle-environment.yml
+      - uses: ./.github/workflows/setup-gradle-environment.yml@main
       - name: Build with Gradle
         run: ./gradlew test
 

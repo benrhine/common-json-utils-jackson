@@ -93,13 +93,13 @@ dependencies {
 	testImplementation "org.mockito:mockito-core:5.2.0"
 }
 
-tasks.named('test') {
+test { testTask ->
 	useJUnitPlatform {
 		excludeTags "int", "slow", "thin", "load", "flowableInt", "adminInt"
 	}
 }
 
-tasks.named('integrationTest') {
+task integrationTest(type: Test) {
 	useJUnitPlatform {
 		includeTags 'int'
 	}

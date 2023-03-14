@@ -37,6 +37,8 @@ jobs:
           server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
           settings-path: ${{ github.workspace }} # location for the settings.xml file
           cache: gradle
+      - name: Unit Test with Gradle
+        run: ./gradlew test
   windows-setup-gradle-environment:
     if: github.event.pull_request.draft == false
     strategy:
@@ -58,6 +60,8 @@ jobs:
           server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
           settings-path: ${{ github.workspace }} # location for the settings.xml file
           cache: gradle
+      - name: Unit Test with Gradle
+        run: ./gradlew test
   macos-setup-gradle-environment:
     if: github.event.pull_request.draft == false
     strategy:
@@ -79,6 +83,8 @@ jobs:
           server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
           settings-path: ${{ github.workspace }} # location for the settings.xml file
           cache: gradle
+      - name: Unit Test with Gradle
+        run: ./gradlew test
 #  ubuntu-setup-gradle-environment:
 #    if: github.event.pull_request.draft == false
 #    strategy:

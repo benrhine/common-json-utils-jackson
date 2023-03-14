@@ -23,7 +23,7 @@ jobs:
         os: [ ubuntu-latest ]
         gradle-version: [ "7.6", "7.6.1" ]
       fail-fast: false
-    uses: benrhine/common-json-utils-jackson/.github/workflows/actions/setup-gradle-env.yml@main
+    uses: ./.github/workflows/actions/setup-gradle-env.yml@main
     with:
       os: ${{ matrix.os }}
       gradle-version: ${{ matrix.gradle-version }}

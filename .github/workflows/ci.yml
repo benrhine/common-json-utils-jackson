@@ -19,7 +19,7 @@ jobs:
   setup-gradle-environment:
     uses: benrhine/common-json-utils-jackson/.github/workflows/setup-gradle-environment.yml@main
   unit-test:
-    uses: benrhine/common-json-utils-jackson/.github/workflows/unit-test.yml
+    uses: benrhine/common-json-utils-jackson/.github/workflows/unit-test.yml@main
   ubuntu-setup-gradle-environment:
     if: github.event.pull_request.draft == false
     strategy:

@@ -1,6 +1,11 @@
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import org.gradle.api.tasks.testing.logging.TestLogEvent
+
 import java.util.concurrent.TimeUnit
 
 import static java.lang.Boolean.parseBoolean
+import static java.lang.Integer.parseInt
+
 /** --------------------------------------------------------------------------------------------------------------------
  * Plugins:
  * ------------------------------------------------------------------------------------------------------------------ */
@@ -72,6 +77,14 @@ configurations {
 }
 
 /** --------------------------------------------------------------------------------------------------------------------
+ * Additional Tasks: This import needs to be before anything that that may call tasks defined here.
+ * ------------------------------------------------------------------------------------------------------------------ */
+apply from: 'step-015-additional-tasks.gradle'
+/** --------------------------------------------------------------------------------------------------------------------
+ * JaCoCo: Configuration for JaCoCo with additional reporting tasks.
+ * ------------------------------------------------------------------------------------------------------------------ */
+apply from: 'step-025-jacoco-config.gradle'
+/** --------------------------------------------------------------------------------------------------------------------
  * Static Analysis Config: Configuration of checkstyle and pmd.
  * Note: Findbugs project is no longer supported, there is a successor SpotBugs that may be worth looking at
  * https://spotbugs.readthedocs.io/en/latest/gradle.html
@@ -94,9 +107,34 @@ dependencies {
 }
 
 test { testTask ->
-	useJUnitPlatform {
-		excludeTags "int", "slow", "thin", "load", "flowableInt", "adminInt"
+	maxParallelForks ((env == "LOCAL") ? 5 : parseInt("$intParallelism"))           // Set max threads to speed up tests
+	reports.html.required = htmlReportsEnabled                                      // Configured in gradle.properties
+//    ignoreFailures = true
+
+	testLogging { logging ->
+		events TestLogEvent.FAILED,
+				TestLogEvent.SKIPPED,
+				TestLogEvent.STANDARD_OUT,
+				TestLogEvent.STANDARD_ERROR
+
+		exceptionFormat TestExceptionFormat.FULL
+		showExceptions true
+		showCauses true
+		showStackTraces true
+		showStandardStreams(parseBoolean("$testShowStandardStreams"))   // Show standard out and standard error of the test JVM(s) on the console
 	}
+
+	useJUnitPlatform {
+		if (!parseBoolean("$testAllEnabled")) {
+			// To run all available tests with ./gradlew clean test set `testAllEnabled` in gradle.properties to true
+			excludeTags "int", "slow", "thin", "load", "flowableInt", "adminInt"
+		}
+	}
+
+	jacoco {
+		enabled = jacocoEnabled                                         // Configured in gradle.properties
+	}
+	finalizedBy unitTestReports                                         // instructs the tests to finish by generating a coverage report
 }
 
 task integrationTest(type: Test) {

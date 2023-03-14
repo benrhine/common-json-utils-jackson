@@ -1,4 +1,4 @@
-name: Integration Test & Upload Coverage
+name: Static Type Check (PMD)[Linting]
 
 on:
   workflow_call:                            # Allows file to be triggered from another workflow
@@ -60,17 +60,17 @@ jobs:
           server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
           settings-path: ${{ github.workspace }} # location for the settings.xml file
           cache: gradle
-#      - name: Setup environment
-#        uses: benrhine/common-json-utils-jackson/.github/workflows/setup-gradle-environment.yml@main
-#        with:
-#          gradle-version: ${{ inputs.gradle-version }}
-#          os: ${{ inputs.os }}
+      #      - name: Setup environment
+      #        uses: benrhine/common-json-utils-jackson/.github/workflows/setup-gradle-environment.yml@main
+      #        with:
+      #          gradle-version: ${{ inputs.gradle-version }}
+      #          os: ${{ inputs.os }}
 
-      - name: Integration Test with Gradle
-        run: ./gradlew integrationTest
+      - name: PMD
+        run: ./gradlew pmdMain
 
-      - name: Archive int test report
+      - name: Archive unit test report
         uses: actions/upload-artifact@v3
         with:
-          name: Integration Test report
-          path: build/reports/tests/test
+          name: Unit Test report
+          path: build/reports/pmd

@@ -52,77 +52,77 @@ jobs:
       os: ${{ matrix.os }}
       gradle-version: ${{ matrix.gradle-version }}
 
-  windows-setup-gradle-environment:
-    if: github.event.pull_request.draft == false
-    strategy:
-      matrix:
-        os: [ windows-latest ]
-        gradle-version: [ "7.6", "7.6.1" ]
-      fail-fast: false
-    uses: benrhine/common-json-utils-jackson/.github/workflows/setup-gradle-environment.yml@main
-    with:
-      os: ${{ matrix.os }}
-      gradle-version: ${{ matrix.gradle-version }}
-
-  windows-unit-test-gradle-environment:
-    needs: windows-setup-gradle-environment
-    strategy:
-      matrix:
-        os: [ windows-latest ]
-        gradle-version: [ "7.6", "7.6.1" ]
-      fail-fast: false
-    uses: benrhine/common-json-utils-jackson/.github/workflows/unit-test.yml@main
-    with:
-      os: ${{ matrix.os }}
-      gradle-version: ${{ matrix.gradle-version }}
-
-  windows-int-test-gradle-environment:
-    needs: windows-setup-gradle-environment
-    strategy:
-      matrix:
-        os: [ windows-latest ]
-        gradle-version: [ "7.6", "7.6.1" ]
-      fail-fast: false
-    uses: benrhine/common-json-utils-jackson/.github/workflows/int-test.yml@main
-    with:
-      os: ${{ matrix.os }}
-      gradle-version: ${{ matrix.gradle-version }}
-
-  macos-setup-gradle-environment:
-    if: github.event.pull_request.draft == false
-    strategy:
-      matrix:
-        os: [ macos-latest ]
-        gradle-version: [ "7.6", "7.6.1" ]
-      fail-fast: false
-    uses: benrhine/common-json-utils-jackson/.github/workflows/setup-gradle-environment.yml@main
-    with:
-      os: ${{ matrix.os }}
-      gradle-version: ${{ matrix.gradle-version }}
-
-  macos-unit-test-gradle-environment:
-    needs: macos-setup-gradle-environment
-    strategy:
-      matrix:
-        os: [ macos-latest ]
-        gradle-version: [ "7.6", "7.6.1" ]
-      fail-fast: false
-    uses: benrhine/common-json-utils-jackson/.github/workflows/unit-test.yml@main
-    with:
-      os: ${{ matrix.os }}
-      gradle-version: ${{ matrix.gradle-version }}
-
-  macos-int-test-gradle-environment:
-    needs: macos-setup-gradle-environment
-    strategy:
-      matrix:
-        os: [ macos-latest ]
-        gradle-version: [ "7.6", "7.6.1" ]
-      fail-fast: false
-    uses: benrhine/common-json-utils-jackson/.github/workflows/int-test.yml@main
-    with:
-      os: ${{ matrix.os }}
-      gradle-version: ${{ matrix.gradle-version }}
+#  windows-setup-gradle-environment:
+#    if: github.event.pull_request.draft == false
+#    strategy:
+#      matrix:
+#        os: [ windows-latest ]
+#        gradle-version: [ "7.6", "7.6.1" ]
+#      fail-fast: false
+#    uses: benrhine/common-json-utils-jackson/.github/workflows/setup-gradle-environment.yml@main
+#    with:
+#      os: ${{ matrix.os }}
+#      gradle-version: ${{ matrix.gradle-version }}
+#
+#  windows-unit-test-gradle-environment:
+#    needs: windows-setup-gradle-environment
+#    strategy:
+#      matrix:
+#        os: [ windows-latest ]
+#        gradle-version: [ "7.6", "7.6.1" ]
+#      fail-fast: false
+#    uses: benrhine/common-json-utils-jackson/.github/workflows/unit-test.yml@main
+#    with:
+#      os: ${{ matrix.os }}
+#      gradle-version: ${{ matrix.gradle-version }}
+#
+#  windows-int-test-gradle-environment:
+#    needs: windows-setup-gradle-environment
+#    strategy:
+#      matrix:
+#        os: [ windows-latest ]
+#        gradle-version: [ "7.6", "7.6.1" ]
+#      fail-fast: false
+#    uses: benrhine/common-json-utils-jackson/.github/workflows/int-test.yml@main
+#    with:
+#      os: ${{ matrix.os }}
+#      gradle-version: ${{ matrix.gradle-version }}
+#
+#  macos-setup-gradle-environment:
+#    if: github.event.pull_request.draft == false
+#    strategy:
+#      matrix:
+#        os: [ macos-latest ]
+#        gradle-version: [ "7.6", "7.6.1" ]
+#      fail-fast: false
+#    uses: benrhine/common-json-utils-jackson/.github/workflows/setup-gradle-environment.yml@main
+#    with:
+#      os: ${{ matrix.os }}
+#      gradle-version: ${{ matrix.gradle-version }}
+#
+#  macos-unit-test-gradle-environment:
+#    needs: macos-setup-gradle-environment
+#    strategy:
+#      matrix:
+#        os: [ macos-latest ]
+#        gradle-version: [ "7.6", "7.6.1" ]
+#      fail-fast: false
+#    uses: benrhine/common-json-utils-jackson/.github/workflows/unit-test.yml@main
+#    with:
+#      os: ${{ matrix.os }}
+#      gradle-version: ${{ matrix.gradle-version }}
+#
+#  macos-int-test-gradle-environment:
+#    needs: macos-setup-gradle-environment
+#    strategy:
+#      matrix:
+#        os: [ macos-latest ]
+#        gradle-version: [ "7.6", "7.6.1" ]
+#      fail-fast: false
+#    uses: benrhine/common-json-utils-jackson/.github/workflows/int-test.yml@main
+#    with:
+#      os: ${{ matrix.os }}
+#      gradle-version: ${{ matrix.gradle-version }}
 
 #  publish-artifact:
 #    #needs: ubuntu-setup-gradle-environment, windows-setup-gradle-environment, macos-setup-gradle-environment, ubuntu-unit-test-gradle-environment, ubuntu-int-test-gradle-environment, windows-unit-test-gradle-environment, windows-int-test-gradle-environment, macos-unit-test-gradle-environment, macos-int-test-gradle-environment

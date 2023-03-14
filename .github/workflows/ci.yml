@@ -35,11 +35,12 @@ jobs:
         os: [ ubuntu-latest ]
         gradle-version: [ "7.6", "7.6.1" ]
       fail-fast: false
-    runs-on: ${{ matrix.os }}
-    steps:
-      - uses: benrhine/common-json-utils-jackson/.github/workflows/setup-gradle-environment.yml@main
-      - name: Build with Gradle
-        run: ./gradlew test
+    uses: benrhine/common-json-utils-jackson/.github/workflows/setup-gradle-environment.yml@main
+    with:
+      os: ${{ matrix.os }}
+      gradle-version: ${{ matrix.gradle-version }}
+    name: Build with Gradle
+    run: ./gradlew test
 
 #  windows-setup-gradle-environment:
 #    if: github.event.pull_request.draft == false

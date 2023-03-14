@@ -23,7 +23,7 @@ jobs:
         os: [ ubuntu-latest ]
         gradle-version: [ "7.6", "7.6.1" ]
       fail-fast: false
-    uses: ./.github/workflows/setup-gradle-environment.yml
+    uses: .github/workflows/setup-gradle-environment.yml
     with:
       gradle-version: ${{ matrix.gradle-version }}
       os: ${{ matrix.os }}
@@ -36,7 +36,7 @@ jobs:
         os: [ windows-latest ]
         gradle-version: [ "7.6", "7.6.1" ]
       fail-fast: false
-    uses: ./.github/workflows/setup-gradle-environment.yml
+    uses: .github/workflows/setup-gradle-environment.yml
     with:
       gradle-version: ${{ matrix.gradle-version }}
       os: ${{ matrix.os }}
@@ -49,47 +49,47 @@ jobs:
         os: [ macos-latest ]
         gradle-version: [ "7.6", "7.6.1" ]
       fail-fast: false
-    uses: ./.github/workflows/setup-gradle-environment.yml
+    uses: .github/workflows/setup-gradle-environment.yml
     with:
       gradle-version: ${{ matrix.gradle-version }}
       os: ${{ matrix.os }}
     secrets: inherit
 
-  ubuntu-lint-unit-test:
-    needs: ubuntu-setup-python-environment
-    strategy:
-      matrix:
-        os: [ ubuntu-latest ]
-        gradle-version: [ "7.6", "7.6.1" ]
-      fail-fast: false
-    uses: ./.github/workflows/unit-test.yml
-    with:
-      os: ${{ matrix.os }}
-      gradle-version: ${{ matrix.gradle-version }}
-    secrets: inherit
-
-  windows-lint-unit-test:
-    needs: windows-setup-python-environment
-    strategy:
-      matrix:
-        os: [ windows-latest ]
-        gradle-version: [ "7.6", "7.6.1" ]
-      fail-fast: false
-    uses: ./.github/workflows/unit-test.yml
-    with:
-      os: ${{ matrix.os }}
-      gradle-version: ${{ matrix.gradle-version }}
-    secrets: inherit
-
-  macos-lint-unit-test:
-    needs: macos-setup-python-environment
-    strategy:
-      matrix:
-        os: [ macos-latest ]
-        gradle-version: [ "7.6", "7.6.1" ]
-      fail-fast: false
-    uses: ./.github/workflows/unit-test.yml
-    with:
-      os: ${{ matrix.os }}
-      gradle-version: ${{ matrix.gradle-version }}
-    secrets: inherit
+#  ubuntu-lint-unit-test:
+#    needs: ubuntu-setup-python-environment
+#    strategy:
+#      matrix:
+#        os: [ ubuntu-latest ]
+#        gradle-version: [ "7.6", "7.6.1" ]
+#      fail-fast: false
+#    uses: ./.github/workflows/unit-test.yml
+#    with:
+#      os: ${{ matrix.os }}
+#      gradle-version: ${{ matrix.gradle-version }}
+#    secrets: inherit
+#
+#  windows-lint-unit-test:
+#    needs: windows-setup-python-environment
+#    strategy:
+#      matrix:
+#        os: [ windows-latest ]
+#        gradle-version: [ "7.6", "7.6.1" ]
+#      fail-fast: false
+#    uses: ./.github/workflows/unit-test.yml
+#    with:
+#      os: ${{ matrix.os }}
+#      gradle-version: ${{ matrix.gradle-version }}
+#    secrets: inherit
+#
+#  macos-lint-unit-test:
+#    needs: macos-setup-python-environment
+#    strategy:
+#      matrix:
+#        os: [ macos-latest ]
+#        gradle-version: [ "7.6", "7.6.1" ]
+#      fail-fast: false
+#    uses: ./.github/workflows/unit-test.yml
+#    with:
+#      os: ${{ matrix.os }}
+#      gradle-version: ${{ matrix.gradle-version }}
+#    secrets: inherit

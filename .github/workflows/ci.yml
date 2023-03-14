@@ -18,42 +18,48 @@ concurrency:
 jobs:
   ubuntu-setup-gradle-environment:
     if: github.event.pull_request.draft == false
+  windows-setup-gradle-environment:
+    if: github.event.pull_request.draft == false
+  macos-setup-gradle-environment:
+    if: github.event.pull_request.draft == false
+#  ubuntu-setup-gradle-environment:
+#    if: github.event.pull_request.draft == false
 #    strategy:
 #      matrix:
 #        os: [ ubuntu-latest ]
 #        gradle-version: [ "7.6", "7.6.1" ]
 #      fail-fast: false
-    uses: .github/workflows/setup-gradle-environment.yml
-    with:
-      gradle-version: "7.6.1" #${{ matrix.gradle-version }}
-      os: ${{ matrix.os }}
-    secrets: inherit
-
-  windows-setup-gradle-environment:
-    if: github.event.pull_request.draft == false
+#    uses: .github/workflows/setup-gradle-environment.yml
+#    with:
+#      gradle-version: ${{ matrix.gradle-version }}
+#      os: ${{ matrix.os }}
+#    secrets: inherit
+#
+#  windows-setup-gradle-environment:
+#    if: github.event.pull_request.draft == false
 #    strategy:
 #      matrix:
 #        os: [ windows-latest ]
 #        gradle-version: [ "7.6", "7.6.1" ]
 #      fail-fast: false
-    uses: .github/workflows/setup-gradle-environment.yml
-    with:
-      gradle-version: "7.6.1" #${{ matrix.gradle-version }}
-      os: ${{ matrix.os }}
-    secrets: inherit
-
-  macos-setup-gradle-environment:
-    if: github.event.pull_request.draft == false
+#    uses: .github/workflows/setup-gradle-environment.yml
+#    with:
+#      gradle-version: ${{ matrix.gradle-version }}
+#      os: ${{ matrix.os }}
+#    secrets: inherit
+#
+#  macos-setup-gradle-environment:
+#    if: github.event.pull_request.draft == false
 #    strategy:
 #      matrix:
 #        os: [ macos-latest ]
 #        gradle-version: [ "7.6", "7.6.1" ]
 #      fail-fast: false
-    uses: .github/workflows/setup-gradle-environment.yml
-    with:
-      gradle-version: "7.6.1" #${{ matrix.gradle-version }}
-      os: ${{ matrix.os }}
-    secrets: inherit
+#    uses: .github/workflows/setup-gradle-environment.yml
+#    with:
+#      gradle-version: ${{ matrix.gradle-version }}
+#      os: ${{ matrix.os }}
+#    secrets: inherit
 
 #  ubuntu-lint-unit-test:
 #    needs: ubuntu-setup-python-environment

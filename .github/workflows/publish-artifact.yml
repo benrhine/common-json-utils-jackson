@@ -4,7 +4,7 @@ on:
   workflow_run:
     workflows: [ 'Build, Lint, Unit Test, Integration Test, and Publish']
     types:
-      - completed
+      - success
 
 jobs:
   publish-artifact:

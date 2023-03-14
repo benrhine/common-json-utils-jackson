@@ -2,7 +2,7 @@ name: Unit Test & Upload Coverage
 
 on:
   workflow_run:
-    workflows: [ 'ubuntu-unit-test-gradle-environment',  'ubuntu-int-test-gradle-environment']
+    workflows: [ 'ubuntu-unit-test-gradle-environment']
     types:
       - completed
   workflow_call:

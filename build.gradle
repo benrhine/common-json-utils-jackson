@@ -95,7 +95,13 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform {
+		excludeTags "int", "slow", "thin", "load", "flowableInt", "adminInt"
+	}
+}
 
+tasks.named('integrationTest') {
+	useJUnitPlatform {
+		includeTags 'int'
 	}
 }
 

@@ -40,133 +40,50 @@ jobs:
       os: ${{ matrix.os }}
       gradle-version: ${{ matrix.gradle-version }}
 
-#  windows-setup-gradle-environment:
-#    if: github.event.pull_request.draft == false
-#    strategy:
-#      matrix:
-#        os: [ windows-latest ]
-#        gradle-version: [ "7.6", "7.6.1" ]
-#      fail-fast: false
-#    runs-on: ${{ matrix.os }}
-#    steps:
-#      - uses: actions/checkout@v3
-#      - name: Set Gradle Version
-#        run: ./gradlew wrapper --gradle-version=${{ matrix.gradle-version }}
-#      - name: Check Gradle Version Set
-#        run: ./gradlew -v
-#      - uses: gradle/wrapper-validation-action@v1
-#      - name: Set up JDK 17
-#        uses: actions/setup-java@v3
-#        with:
-#          java-version: '17'
-#          distribution: 'corretto' # List of supported jvms https://github.com/actions/setup-java
-#          server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
-#          settings-path: ${{ github.workspace }} # location for the settings.xml file
-#          cache: gradle
-#
-#      - name: Build with Gradle
-#        run: ./gradlew test
-#
-#  macos-setup-gradle-environment:
-#    if: github.event.pull_request.draft == false
-#    strategy:
-#      matrix:
-#        os: [ macos-latest ]
-#        gradle-version: [ "7.6", "7.6.1" ]
-#      fail-fast: false
-#    runs-on: ${{ matrix.os }}
-#    steps:
-#      - uses: actions/checkout@v3
-#      - name: Set Gradle Version
-#        run: ./gradlew wrapper --gradle-version=${{ matrix.gradle-version }}
-#      - name: Check Gradle Version Set
-#        run: ./gradlew -v
-#      - uses: gradle/wrapper-validation-action@v1
-#      - name: Set up JDK 17
-#        uses: actions/setup-java@v3
-#        with:
-#          java-version: '17'
-#          distribution: 'corretto' # List of supported jvms https://github.com/actions/setup-java
-#          server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
-#          settings-path: ${{ github.workspace }} # location for the settings.xml file
-#          cache: gradle
-#
-#      - name: Build with Gradle
-#        run: ./gradlew test
-#  ubuntu-setup-gradle-environment:
-#    if: github.event.pull_request.draft == false
-#    strategy:
-#      matrix:
-#        os: [ ubuntu-latest ]
-#        gradle-version: [ "7.6", "7.6.1" ]
-#      fail-fast: false
-#    uses: .github/workflows/setup-gradle-environment.yml
-#    with:
-#      gradle-version: ${{ matrix.gradle-version }}
-#      os: ${{ matrix.os }}
-#    secrets: inherit
-#
-#  windows-setup-gradle-environment:
-#    if: github.event.pull_request.draft == false
-#    strategy:
-#      matrix:
-#        os: [ windows-latest ]
-#        gradle-version: [ "7.6", "7.6.1" ]
-#      fail-fast: false
-#    uses: .github/workflows/setup-gradle-environment.yml
-#    with:
-#      gradle-version: ${{ matrix.gradle-version }}
-#      os: ${{ matrix.os }}
-#    secrets: inherit
-#
-#  macos-setup-gradle-environment:
-#    if: github.event.pull_request.draft == false
-#    strategy:
-#      matrix:
-#        os: [ macos-latest ]
-#        gradle-version: [ "7.6", "7.6.1" ]
-#      fail-fast: false
-#    uses: .github/workflows/setup-gradle-environment.yml
-#    with:
-#      gradle-version: ${{ matrix.gradle-version }}
-#      os: ${{ matrix.os }}
-#    secrets: inherit
+  windows-setup-gradle-environment:
+    if: github.event.pull_request.draft == false
+    strategy:
+      matrix:
+        os: [ windows-latest ]
+        gradle-version: [ "7.6", "7.6.1" ]
+      fail-fast: false
+    uses: benrhine/common-json-utils-jackson/.github/workflows/setup-gradle-environment.yml@main
+    with:
+      os: ${{ matrix.os }}
+      gradle-version: ${{ matrix.gradle-version }}
 
-#  ubuntu-lint-unit-test:
-#    needs: ubuntu-setup-python-environment
-#    strategy:
-#      matrix:
-#        os: [ ubuntu-latest ]
-#        gradle-version: [ "7.6", "7.6.1" ]
-#      fail-fast: false
-#    uses: ./.github/workflows/unit-test.yml
-#    with:
-#      os: ${{ matrix.os }}
-#      gradle-version: ${{ matrix.gradle-version }}
-#    secrets: inherit
-#
-#  windows-lint-unit-test:
-#    needs: windows-setup-python-environment
-#    strategy:
-#      matrix:
-#        os: [ windows-latest ]
-#        gradle-version: [ "7.6", "7.6.1" ]
-#      fail-fast: false
-#    uses: ./.github/workflows/unit-test.yml
-#    with:
-#      os: ${{ matrix.os }}
-#      gradle-version: ${{ matrix.gradle-version }}
-#    secrets: inherit
-#
-#  macos-lint-unit-test:
-#    needs: macos-setup-python-environment
-#    strategy:
-#      matrix:
-#        os: [ macos-latest ]
-#        gradle-version: [ "7.6", "7.6.1" ]
-#      fail-fast: false
-#    uses: ./.github/workflows/unit-test.yml
-#    with:
-#      os: ${{ matrix.os }}
-#      gradle-version: ${{ matrix.gradle-version }}
-#    secrets: inherit
+  windows-unit-test-gradle-environment:
+    needs: windows-setup-gradle-environment
+    strategy:
+      matrix:
+        os: [ windows-latest ]
+        gradle-version: [ "7.6", "7.6.1" ]
+      fail-fast: false
+    uses: benrhine/common-json-utils-jackson/.github/workflows/unit-test.yml@main
+    with:
+      os: ${{ matrix.os }}
+      gradle-version: ${{ matrix.gradle-version }}
+
+  macos-setup-gradle-environment:
+    if: github.event.pull_request.draft == false
+    strategy:
+      matrix:
+        os: [ macos-latest ]
+        gradle-version: [ "7.6", "7.6.1" ]
+      fail-fast: false
+    uses: benrhine/common-json-utils-jackson/.github/workflows/setup-gradle-environment.yml@main
+    with:
+      os: ${{ matrix.os }}
+      gradle-version: ${{ matrix.gradle-version }}
+
+  macos-unit-test-gradle-environment:
+    needs: macos-setup-gradle-environment
+    strategy:
+      matrix:
+        os: [ macos-latest ]
+        gradle-version: [ "7.6", "7.6.1" ]
+      fail-fast: false
+    uses: benrhine/common-json-utils-jackson/.github/workflows/unit-test.yml@main
+    with:
+      os: ${{ matrix.os }}
+      gradle-version: ${{ matrix.gradle-version }}

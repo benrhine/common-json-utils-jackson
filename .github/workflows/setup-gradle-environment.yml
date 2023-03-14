@@ -18,7 +18,10 @@ jobs:
     runs-on: ${{ inputs.os }}
 
     steps:
-      uses: ./.github/workflows/actions/setup-gradle-env.yml
-      with:
-        os: ${{ inputs.os }}
-        gradle-version: ${{ inputs.gradle-version }}
+      - uses: actions/checkout@v3
+
+      - name: Setup environment
+        uses: ./.github/workflows/actions/setup-gradle-env.yml
+        with:
+          os: ${{ inputs.os }}
+          gradle-version: ${{ inputs.gradle-version }}

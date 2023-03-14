@@ -35,7 +35,7 @@ jobs:
         os: [ ubuntu-latest ]
         gradle-version: [ "7.6", "7.6.1" ]
       fail-fast: false
-    uses: benrhine/common-json-utils-jackson/.github/workflows/unit-test.yml@main
+    uses: benrhine/common-json-utils-jackson/.github/workflows/unit-test.yml
     with:
       os: ${{ matrix.os }}
       python-version: ${{ matrix.python-version }}

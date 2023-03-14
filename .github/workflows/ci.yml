@@ -17,14 +17,14 @@ concurrency:
 
 jobs:
   ubuntu-setup-gradle-environment:
-    if: github.event.pull_request.draft == false
-    strategy:
-      matrix:
-        os: [ ubuntu-latest ]
-        gradle-version: [ "7.6", "7.6.1" ]
-      fail-fast: false
+#    if: github.event.pull_request.draft == false
+#    strategy:
+#      matrix:
+#        os: [ ubuntu-latest ]
+#        gradle-version: [ "7.6", "7.6.1" ]
+#      fail-fast: false
 
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - name: Verify Gradle
@@ -40,14 +40,14 @@ jobs:
       - name: Unit Test with Gradle
         run: ./gradlew test
   windows-setup-gradle-environment:
-    if: github.event.pull_request.draft == false
-    strategy:
-      matrix:
-        os: [ windows-latest ]
-        gradle-version: [ "7.6", "7.6.1" ]
-      fail-fast: false
+#    if: github.event.pull_request.draft == false
+#    strategy:
+#      matrix:
+#        os: [ windows-latest ]
+#        gradle-version: [ "7.6", "7.6.1" ]
+#      fail-fast: false
 
-    runs-on: ${{ matrix.os }}
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3
       - name: Verify Gradle
@@ -63,14 +63,14 @@ jobs:
       - name: Unit Test with Gradle
         run: ./gradlew test
   macos-setup-gradle-environment:
-    if: github.event.pull_request.draft == false
-    strategy:
-      matrix:
-        os: [ macos-latest ]
-        gradle-version: [ "7.6", "7.6.1" ]
-      fail-fast: false
+#    if: github.event.pull_request.draft == false
+#    strategy:
+#      matrix:
+#        os: [ macos-latest ]
+#        gradle-version: [ "7.6", "7.6.1" ]
+#      fail-fast: false
 
-    runs-on: ${{ matrix.os }}
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v3
       - name: Verify Gradle

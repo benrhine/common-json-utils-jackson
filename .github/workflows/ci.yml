@@ -42,74 +42,60 @@ jobs:
 
       - name: Build with Gradle
         run: ./gradlew test
-#    if: github.event.pull_request.draft == false
-#    strategy:
-#      matrix:
-#        os: [ ubuntu-latest ]
-#        gradle-version: [ "7.6", "7.6.1" ]
-#      fail-fast: false
 
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v3
-#      - name: Verify Gradle
-#      - uses: gradle/wrapper-validation-action@v1
-#      - name: Set up JDK 17
-#        uses: actions/setup-java@v3
-#        with:
-#          java-version: '17'
-#          distribution: 'corretto' # List of supported jvms https://github.com/actions/setup-java
-#          server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
-#          settings-path: ${{ github.workspace }} # location for the settings.xml file
-#          cache: gradle
-#      - name: Unit Test with Gradle
-#        run: ./gradlew test
-#  windows-setup-gradle-environment:
-#    if: github.event.pull_request.draft == false
-#    strategy:
-#      matrix:
-#        os: [ windows-latest ]
-#        gradle-version: [ "7.6", "7.6.1" ]
-#      fail-fast: false
-#
-#    runs-on: windows-latest
-#    steps:
-#      - uses: actions/checkout@v3
-#      - name: Verify Gradle
-#      - uses: gradle/wrapper-validation-action@v1
-#      - name: Set up JDK 17
-#        uses: actions/setup-java@v3
-#        with:
-#          java-version: '17'
-#          distribution: 'corretto' # List of supported jvms https://github.com/actions/setup-java
-#          server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
-#          settings-path: ${{ github.workspace }} # location for the settings.xml file
-#          cache: gradle
-#      - name: Unit Test with Gradle
-#        run: ./gradlew test
-#  macos-setup-gradle-environment:
-#    if: github.event.pull_request.draft == false
-#    strategy:
-#      matrix:
-#        os: [ macos-latest ]
-#        gradle-version: [ "7.6", "7.6.1" ]
-#      fail-fast: false
+  windows-setup-gradle-environment:
+    if: github.event.pull_request.draft == false
+    strategy:
+      matrix:
+        os: [ windows-latest ]
+        gradle-version: [ "7.6", "7.6.1" ]
+      fail-fast: false
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set Gradle Version
+        run: ./gradlew wrapper --gradle-version=${{ matrix.gradle-version }}
+      - name: Check Gradle Version Set
+        run: ./gradlew -v
+      - uses: gradle/wrapper-validation-action@v1
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'corretto' # List of supported jvms https://github.com/actions/setup-java
+          server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
+          settings-path: ${{ github.workspace }} # location for the settings.xml file
+          cache: gradle
 
-#    runs-on: macos-latest
-#    steps:
-#      - uses: actions/checkout@v3
-#      - name: Verify Gradle
-#      - uses: gradle/wrapper-validation-action@v1
-#      - name: Set up JDK 17
-#        uses: actions/setup-java@v3
-#        with:
-#          java-version: '17'
-#          distribution: 'corretto' # List of supported jvms https://github.com/actions/setup-java
-#          server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
-#          settings-path: ${{ github.workspace }} # location for the settings.xml file
-#          cache: gradle
-#      - name: Unit Test with Gradle
-#        run: ./gradlew test
+      - name: Build with Gradle
+        run: ./gradlew test
+
+  macos-setup-gradle-environment:
+    if: github.event.pull_request.draft == false
+    strategy:
+      matrix:
+        os: [ macos-latest ]
+        gradle-version: [ "7.6", "7.6.1" ]
+      fail-fast: false
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set Gradle Version
+        run: ./gradlew wrapper --gradle-version=${{ matrix.gradle-version }}
+      - name: Check Gradle Version Set
+        run: ./gradlew -v
+      - uses: gradle/wrapper-validation-action@v1
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'corretto' # List of supported jvms https://github.com/actions/setup-java
+          server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
+          settings-path: ${{ github.workspace }} # location for the settings.xml file
+          cache: gradle
+
+      - name: Build with Gradle
+        run: ./gradlew test
 #  ubuntu-setup-gradle-environment:
 #    if: github.event.pull_request.draft == false
 #    strategy:

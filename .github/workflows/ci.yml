@@ -125,7 +125,7 @@ jobs:
       gradle-version: ${{ matrix.gradle-version }}
 
   publish-artifact:
-    needs: ubuntu-unit-test-gradle-environment, ubuntu-int-test-gradle-environment, windows-unit-test-gradle-environment, windows-int-test-gradle-environment, macos-unit-test-gradle-environment, macos-int-test-gradle-environment
+    needs: ubuntu-setup-gradle-environment, windows-setup-gradle-environment, macos-setup-gradle-environment, ubuntu-unit-test-gradle-environment, ubuntu-int-test-gradle-environment, windows-unit-test-gradle-environment, windows-int-test-gradle-environment, macos-unit-test-gradle-environment, macos-int-test-gradle-environment
     uses: benrhine/common-json-utils-jackson/.github/workflows/int-test.yml@main
     with:
       os: ubuntu-latest

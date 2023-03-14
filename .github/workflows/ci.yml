@@ -26,6 +26,10 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
+      - name: Set Gradle Version
+        run: ./gradlew wrapper --gradle-version=${{ matrix.gradle-version }}
+      - name: Check Gradle Version Set
+        run: ./gradlew -v
       - uses: gradle/wrapper-validation-action@v1
       - name: Set up JDK 17
         uses: actions/setup-java@v3

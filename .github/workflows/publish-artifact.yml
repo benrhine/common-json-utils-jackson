@@ -33,7 +33,7 @@ on:
         default: '7.6'
 
 jobs:
-  unit-tests:
+  publish-artifact:
     runs-on: ${{ inputs.os }}
     env:
       # on MAC OS, we need to set this environment variable
@@ -60,17 +60,38 @@ jobs:
           server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
           settings-path: ${{ github.workspace }} # location for the settings.xml file
           cache: gradle
-#      - name: Setup environment
-#        uses: benrhine/common-json-utils-jackson/.github/workflows/setup-gradle-environment.yml@main
-#        with:
-#          gradle-version: ${{ inputs.gradle-version }}
-#          os: ${{ inputs.os }}
 
-      - name: Unit Test with Gradle
-        run: ./gradlew test
+      - name: Save application version for Slack Alert
+        run: |
+          echo "app_version=$(./gradlew printVersion -Pci=true -Psnapshot=true | grep 'SNAPSHOT')" >> $GITHUB_ENV
+        env: # These must be passed in, in every step
+          BUILD_RUN_ID: ${{ github.run_id }}
+          BUILD_RUN_NUMBER: ${{ github.run_number }}
+          BUILD_RUN_ATTEMPT: ${{ github.run_attempt }}
 
-      - name: Archive unit test report
-        uses: actions/upload-artifact@v3
-        with:
-          name: Unit Test report
-          path: build/reports/tests/test
+      - name: Check that the app version was set
+        run: |
+          echo "${{ env.app_version }}"
+
+      # The USERNAME and TOKEN need to correspond to the credentials environment variables used in
+      # the publishing section of your build.gradle
+      - name: Publish to GitHub Packages
+        run: ./gradlew publish -Pci=true -Psnapshot=true
+        env: # These must be passed in, in every step
+          BUILD_RUN_ID: ${{ github.run_id }}
+          BUILD_RUN_NUMBER: ${{ github.run_number }}
+          BUILD_RUN_ATTEMPT: ${{ github.run_attempt }}
+          GITHUB_ACTOR: ${{ secrets.GITHUB_ACTOR }}
+          # I don't understand why the default token is not sufficient
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          #        SLACK_CHANNEL: general
+          SLACK_COLOR: ${{ job.status }} # or a specific color like 'good' or '#ff00ff'
+          SLACK_ICON: https://github.com/rtCamp.png?size=48
+          SLACK_MESSAGE: You may now include | com.benrhine:common-json-utils-jackson:${{ env.app_version }}
+          SLACK_TITLE: New ARTIFACT available
+          SLACK_USERNAME: RhineConsulting
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}

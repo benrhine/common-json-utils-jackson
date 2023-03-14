@@ -1,4 +1,4 @@
-name: Unit Test & Upload Coverage
+name: Integration Test & Upload Coverage
 
 on:
   workflow_call:
@@ -66,11 +66,11 @@ jobs:
 #          gradle-version: ${{ inputs.gradle-version }}
 #          os: ${{ inputs.os }}
 
-      - name: Unit Test with Gradle
-        run: ./gradlew test
+      - name: Integration Test with Gradle
+        run: ./gradlew integrationTest
 
-      - name: Archive unit test report
+      - name: Archive int test report
         uses: actions/upload-artifact@v3
         with:
-          name: Unit Test report
+          name: Integration Test report
           path: build/reports/tests/test

@@ -18,8 +18,9 @@ jobs:
     runs-on: ${{ inputs.os }}
 
     steps:
+      - uses: actions/checkout@v3
       - name: Setup environment
-        uses: benrhine/common-json-utils-jackson/.github/workflows/actions/setup-gradle-env.yml
+        uses: ./.github/workflows/actions/setup-gradle-env.yml
         with:
           os: ${{ inputs.os }}
           gradle-version: ${{ inputs.gradle-version }}

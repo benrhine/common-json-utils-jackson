@@ -1,0 +1,66 @@
+name: Lint, Unit Test & Upload Coverage
+
+on:
+  workflow_call:
+    inputs:
+      os:
+        description: 'OS'
+        type: string
+        required: true
+      gradle-version:
+        description: 'Gradle version'
+        type: string
+        required: true
+
+  workflow_dispatch:
+    inputs:
+      os:
+        description: 'OS'
+        type: choice
+        options:
+          - ubuntu-latest
+          - macos-latest
+          - windows-latest
+        required: false
+        default: 'ubuntu-latest'
+      gradle-version:
+        description: 'Gradle version'
+        type: choice
+        options:
+          - '7.6'
+          - '7.6.1'
+        required: false
+        default: '7.6'
+
+jobs:
+  lint-unit-tests:
+    name: lint-unit-tests
+    runs-on: ${{ inputs.os }}
+    env:
+      # on MAC OS, we need to set this environment variable
+      # to fix problems with the fork() calls (see this thread
+      # for more information: http://sealiesoftware.com/blog/archive/2017/6/5/Objective-C_and_fork_in_macOS_1013.html)
+      OBJC_DISABLE_INITIALIZE_FORK_SAFETY: "YES"
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - uses: actions/checkout@v3
+
+#      - name: Setup environment
+#        uses: ./.github/actions/setup_environment
+#        with:
+#          cache_version: ${{ secrets.GH_ACTIONS_CACHE_KEY }}
+#          python-version: ${{ inputs.python-version }}
+#          os: ${{ inputs.os }}
+
+      - name: Build with Gradle
+        run: ./gradlew test
+
+      - name: Archive test report
+        uses: actions/upload-artifact@v3
+        with:
+          name: Test report
+          path: build/reports/tests/test

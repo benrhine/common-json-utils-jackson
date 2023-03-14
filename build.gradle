@@ -1,0 +1,196 @@
+import java.util.concurrent.TimeUnit
+
+import static java.lang.Boolean.parseBoolean
+/** --------------------------------------------------------------------------------------------------------------------
+ * Plugins:
+ * ------------------------------------------------------------------------------------------------------------------ */
+plugins {
+	// Which Plugin                                         What Version                                Plugin Notes
+	id 'idea'																							// https://docs.gradle.org/current/userguide/idea_plugin.html
+	id "jacoco"                                                                                         // https://docs.gradle.org/current/userguide/jacoco_plugin.html
+	id 'java-library'																					// https://docs.gradle.org/current/userguide/java_library_plugin.html
+	id 'maven-publish'																					// https://docs.gradle.org/current/userguide/publishing_maven.html
+	id "checkstyle"                                                                                     // https://docs.gradle.org/current/userguide/checkstyle_plugin.html
+	id "pmd"                                                                                            // https://docs.gradle.org/current/userguide/pmd_plugin.html
+	// id "com.adarshr.test-logger"                            version "$testLoggerPlugin"                 // https://plugins.gradle.org/plugin/com.adarshr.test-logger
+	// id "se.bjurr.gitchangelog.git-changelog-gradle-plugin"  version "$gitChangelogPlugin"               // https://plugins.gradle.org/plugin/se.bjurr.gitchangelog.git-changelog-gradle-plugin
+	// id "org.sonarqube"                                      version "$sonarQubePlugin"
+
+}
+
+/** --------------------------------------------------------------------------------------------------------------------
+ * Project Settings: (Variables from gradle.properties)
+ * ------------------------------------------------------------------------------------------------------------------ */
+// Name                                     // Primary Config                       // Default Value
+ext.allowEnvOverride                        = parseBoolean((String) System.env.ENV_OVERRIDE_ENABLED) ?: parseBoolean("$buildAllowENVOverride")
+ext.vcsUser                                 = System.env.GITHUB_ACTOR         // DO NOT PUT IN PROPERTIES FILE
+ext.vcsPass                                 = System.env.GITHUB_TOKEN   // DO NOT PUT IN PROPERTIES FILE
+ext.env                                     = System.env.ENV ?: "dev"
+ext.nrEnv                                   = env.toUpperCase().replaceAll("-", " ")
+//ext.bbBranch                                = System.env.VCS_BRANCH           // ONLY FOR DEPLOYMENTS
+//ext.bbUserUuid                              = System.env.VCS_STEP_TRIGGERER_UUID
+//ext.bbBuildNum                              = System.env.VCS_BUILD_NUMBER     // ONLY FOR DEPLOYMENTS
+ext.whichTestSet                            = System.env.TEST_STEP
+ext.slackToken                              = System.env.SLACK_TOKEN
+ext.slackNotificationMainChannel            = System.env.SLACK_BUILDS_CHANNEL_ID
+ext.slackNotificationChannel                = System.env.SLACK_BUILDS_CHANNEL_NAME
+ext.buildSlackURL                           = System.env.SLACK_HOOK_URL
+
+//ext.gradleIcon                              = "$slackGradleIconUrl"
+
+if (ext.allowEnvOverride) {
+	// Allow for these variables to be overridden by env variables if desired but have a fallback to a reasonable default
+	ext.jacocoEnabled                       = parseBoolean((String) System.env.EXAMPLE_JACOCO_ENABLED)        ?: parseBoolean("$jacocoPluginEnabled")
+	ext.htmlReportsEnabled                  = parseBoolean((String) System.env.EXAMPLE_HTML_REPORTS_ENABLED)  ?: parseBoolean("$testHtmlReportsEnabled")
+	ext.checkstyleIgnoreFail                = parseBoolean((String) System.env.EXAMPLE_CHECKSTYLE_IGNORE_FAILURES)  ?: parseBoolean("$checkstyleIgnoreFailures")
+	ext.checkstyleXml                       = parseBoolean((String) System.env.EXAMPLE_CHECKSTYLE_XML_REPORT)       ?: parseBoolean("$checkstyleXmlReportEnabled")
+	ext.checkstyleHtml                      = parseBoolean((String) System.env.EXAMPLE_CHECKSTYLE_HTML_REPORT)      ?: parseBoolean("$checkstyleHtmlReportEnabled")
+	ext.pmdIgnoreFail                       = parseBoolean((String) System.env.EXAMPLE_PMD_IGNORE_FAILURES)         ?: parseBoolean("$pmdIgnoreFailures")
+	ext.pmdXml                              = parseBoolean((String) System.env.EXAMPLE_PMD_XML_REPORT)              ?: parseBoolean("$pmdXmlReportEnabled")
+	ext.pmdHtml                             = parseBoolean((String) System.env.EXAMPLE_PMD_HTML_REPORT)             ?: parseBoolean("$pmdHtmlReportEnabled")
+} else {
+	ext.jacocoEnabled                       = parseBoolean("$jacocoPluginEnabled")
+	ext.htmlReportsEnabled                  = parseBoolean("$testHtmlReportsEnabled")
+	ext.checkstyleIgnoreFail                = parseBoolean("$checkstyleIgnoreFailures")
+	ext.checkstyleXml                       = parseBoolean("$checkstyleXmlReportEnabled")
+	ext.checkstyleHtml                      = parseBoolean("$checkstyleHtmlReportEnabled")
+	ext.pmdIgnoreFail                       = parseBoolean("$pmdIgnoreFailures")
+	ext.pmdXml                              = parseBoolean("$pmdXmlReportEnabled")
+	ext.pmdHtml                             = parseBoolean("$pmdHtmlReportEnabled")
+}
+
+group = 'com.benrhine'
+sourceCompatibility = '17'
+
+apply from: "step-001-versioning.gradle"
+
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+/** --------------------------------------------------------------------------------------------------------------------
+ * Static Analysis Config: Configuration of checkstyle and pmd.
+ * Note: Findbugs project is no longer supported, there is a successor SpotBugs that may be worth looking at
+ * https://spotbugs.readthedocs.io/en/latest/gradle.html
+ * ------------------------------------------------------------------------------------------------------------------ */
+apply from: 'step-030-checkstyle-config.gradle'
+apply from: 'step-035-pmd-config.gradle'
+
+repositories {
+	mavenCentral()
+}
+
+
+dependencies {
+	api 'com.fasterxml.jackson.core:jackson-databind:2.14.2'
+	implementation 'org.springframework.boot:spring-boot-starter-web:3.0.4' // ONLY FOR INTEGRATION TESTING
+	testImplementation 'org.springframework.boot:spring-boot-starter-test:3.0.4'
+	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
+	testImplementation 'org.mockito:mockito-junit-jupiter:5.2.0'
+	testImplementation "org.mockito:mockito-core:5.2.0"
+}
+
+tasks.named('test') {
+	useJUnitPlatform {
+
+	}
+}
+
+if (hasProperty('buildScan')) {
+	buildScan {
+		termsOfServiceUrl = 'https://gradle.com/terms-of-service'
+		termsOfServiceAgree = 'yes'
+	}
+}
+
+/** --------------------------------------------------------------------------------------------------------------------
+ * Publish: Modern way to publish artifacts using the maven-publish plugin (Gradle 7+)
+ *
+ * Currently ./gradlew publish will publish a usable artifact to the local build folder. Once published the artifact
+ * will need to be copied over to the libraries project and pushed to the repository MANUALLY for use. It should
+ * be possible to automatically publish the artifact (see commented out repo block) but currently that configuration
+ * fails due to an xml parse error.
+ *
+ * https://www.jetbrains.com/help/idea/add-a-gradle-library-to-the-maven-repository.html#publish_remote
+ *
+ * ------------------------------------------------------------------------------------------------------------------ */
+publishing {
+	repositories {
+		maven {
+			name = "GitHubPackages"
+			url = uri("https://maven.pkg.github.com/benrhine/libraries")
+			credentials {
+				username = "$vcsUser"
+				password = "$vcsPass"
+			}
+		}
+	}
+	publications {
+		gpr(MavenPublication) {
+			from(components.java)
+		}
+	}
+}
+/** --------------------------------------------------------------------------------------------------------------------
+ * Helper Functions:
+ *
+ * ------------------------------------------------------------------------------------------------------------------ */
+static final String getDate() {
+	return new Date().format('yyyyMMddHHmmss')
+}
+
+final getCurrentGitCommit() {
+	def commitHash = "Unknown hash"
+	try {
+		def workingDir = new File("${project.projectDir}")
+		def result = 'git rev-parse HEAD'.execute(null, workingDir)
+		result.waitFor()
+		if (result.exitValue() == 0) {
+			commitHash = result.text.trim()
+		}
+	} catch (e) {
+		println e.message
+	}
+	println "Current Git hash: " + commitHash
+}
+
+final getCurrentGitBranch() {
+	def gitBranch = "Unknown branch"
+	try {
+		def workingDir = new File("${project.projectDir}")
+		def result = 'git rev-parse --abbrev-ref HEAD'.execute(null, workingDir)
+		result.waitFor()
+		if (result.exitValue() == 0) {
+			gitBranch = result.text.trim()
+		}
+	} catch (e) {
+		println e.message
+	}
+	println "Current Git Branch: " + gitBranch
+	return gitBranch
+}
+
+static final void deleteFilesOlderThanNDays(int expirationPeriod, String dirPath) {
+	File targetDir = new File(dirPath)
+	if (!targetDir.exists()) {
+		throw new RuntimeException(String.format("Log files directory '%s' does not exist in the environment", dirPath))
+	}
+
+	File[] files = targetDir.listFiles()
+	for (File file : files) {
+		long diff = new Date().getTime() - file.lastModified()
+		println "DIFF: " + diff
+
+		// Granularity = DAYS;
+		long desiredLifespan = TimeUnit.DAYS.toMillis(expirationPeriod)
+		println "desiredLifespan: " + desiredLifespan
+		println file.getName()
+
+		if ((diff > desiredLifespan) && (!file.getName().equalsIgnoreCase("README.md"))){
+			file.delete()
+		}
+	}
+}

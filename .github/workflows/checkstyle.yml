@@ -92,8 +92,10 @@ jobs:
         id: config-java-gradle                            # Apply easy to reference id
         uses: ./.github/workflows/actions/setup-env       # Path reference to local action
         with:                                             # Pass in versions for testing
-          gradle-version: ${{ inputs.gradle-version }}
           os: ${{ inputs.os }}
+          java-version: ${{ inputs.java-version }}
+          jdk-publisher: ${{ inputs.jdk-publisher }}
+          gradle-version: ${{ inputs.gradle-version }}
 
       - name: Checkstyle                                  # Run static type check (Lint)
         run: ./gradlew checkstyleMain

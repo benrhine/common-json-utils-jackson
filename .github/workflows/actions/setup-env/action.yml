@@ -1,9 +1,6 @@
 name: "Configure Java and Gradle Wrapper"
 description: "Download and configure the desired gradle wrapper"
 inputs:
-  cache_version:
-    description: 'TODO figure out if this works for me'
-    required: true
   os:
     description: 'OS'
     required: true

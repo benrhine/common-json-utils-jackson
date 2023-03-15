@@ -25,4 +25,3 @@ All the following are static methods and can be declared anywhere in your code.
 
 Currently, all of the above are capable of returning a RuntimeException with a custom message.
 
-test

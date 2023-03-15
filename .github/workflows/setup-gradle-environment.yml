@@ -15,7 +15,6 @@ on:
 jobs:
   environment-setup:
     name: Environment Setup
-    id: environment-setup
     runs-on: ${{ inputs.os }}
 
     steps:

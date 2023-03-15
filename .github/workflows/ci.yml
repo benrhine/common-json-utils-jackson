@@ -17,13 +17,13 @@ concurrency:
 
 jobs:
   ubuntu-setup-gradle-environment:
+    timeout-minutes: 120
     if: github.event.pull_request.draft == false
     strategy:
       matrix:
         os: [ ubuntu-latest ]
         gradle-version: [ "7.6", "7.6.1" ]
       fail-fast: false
-    timeout-minutes: 120
     uses: benrhine/common-json-utils-jackson/.github/workflows/setup-gradle-environment.yml@main
     with:
       os: ${{ matrix.os }}

@@ -143,23 +143,23 @@ jobs:
 #      java-version: ${{ matrix.java-version }}
 #      jdk-publisher: ${{ matrix.jdk-publisher }}
 #      gradle-version: ${{ matrix.gradle-version }}
-#
-#  macos-setup-gradle-environment:
-#    if: github.event.pull_request.draft == false
-#    strategy:
-#      matrix:
-#        os: [ macos-latest ]
-#        java-version: [ "17", "18", "19" ]                        # ONLY TAKES MAJOR VERSION
-#        jdk-publisher: [ "corretto" ]
-#        gradle-version: [ "7.5.1", "7.6", "7.6.1", "8.0", "8.0.1", "8.0.2" ] # Do not work with java 19 - "7.4", "7.4.1", "7.5",
-#      fail-fast: false
-#    uses: ./.github/workflows/setup-gradle-environment.yml
-#    with:
-#      os: ${{ matrix.os }}
-#      java-version: ${{ matrix.java-version }}
-#      jdk-publisher: ${{ matrix.jdk-publisher }}
-#      gradle-version: ${{ matrix.gradle-version }}
-#
+
+  macos-setup-gradle-environment:
+    if: github.event.pull_request.draft == false
+    strategy:
+      matrix:
+        os: [ macos-latest ]
+        java-version: [ "17", "18", "19" ]                        # ONLY TAKES MAJOR VERSION
+        jdk-publisher: [ "corretto" ]
+        gradle-version: [ "7.5.1", "7.6", "7.6.1", "8.0", "8.0.1", "8.0.2" ] # Do not work with java 19 - "7.4", "7.4.1", "7.5",
+      fail-fast: false
+    uses: ./.github/workflows/setup-gradle-environment.yml
+    with:
+      os: ${{ matrix.os }}
+      java-version: ${{ matrix.java-version }}
+      jdk-publisher: ${{ matrix.jdk-publisher }}
+      gradle-version: ${{ matrix.gradle-version }}
+
 #  macos-unit-test-gradle-environment:
 #    needs: macos-setup-gradle-environment
 #    strategy:

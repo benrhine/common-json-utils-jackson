@@ -27,7 +27,7 @@ jobs:
 
       - name: Save application version for Slack Alert
         run: |
-          echo "app_version=$(./gradlew printVersion -Pci=true -Psnapshot=true | grep 'SNAPSHOT')" >> $GITHUB_ENV
+          echo "app_version=$(./gradlew printVersion -Pci=true -Psnapshot=true | tail -n 4 | head -n 1 )" >> $GITHUB_ENV
         env: # These must be passed in, in every step
           BUILD_RUN_ID: ${{ github.run_id }}
           BUILD_RUN_NUMBER: ${{ github.run_number }}

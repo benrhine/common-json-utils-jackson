@@ -15,6 +15,7 @@ inputs:
 
 runs:
   using: "composite"
+  timeout-minutes: 30
   steps:
     - uses: actions/checkout@v3
     - name: Set Gradle Version

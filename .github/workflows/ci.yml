@@ -27,7 +27,6 @@ jobs:
     with:
       os: ${{ matrix.os }}
       gradle-version: ${{ matrix.gradle-version }}
-    timeout-minutes: 120
 
   ubuntu-unit-test-gradle-environment:
     needs: ubuntu-setup-gradle-environment

@@ -35,8 +35,10 @@ on:                                         # Called from the ci.yml
         description: 'Java version'
         type: choice
         options:
+          - '17'
           - '17.0.5'
           - '17.0.6'
+          - '19'
           - '19.0.1'
           - '19.0.2'
         required: false

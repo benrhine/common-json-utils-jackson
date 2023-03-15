@@ -21,60 +21,60 @@ jobs:
     strategy:
       matrix:
         os: [ ubuntu-latest ]
-        gradle-version: [ "7.6" ]
+        gradle-version: ["7.6.1"] #[ "7.4", "7.4.1", "7.5", "7.5.1", "7.6", "7.6.1", "8.0", "8.0.1", "8.0.2" ]
       fail-fast: false
     uses: ./.github/workflows/setup-gradle-environment.yml        # Starting with the ./. means it is a local reusable workflow
     with:
       os: ${{ matrix.os }}
       gradle-version: ${{ matrix.gradle-version }}
 
-#  ubuntu-unit-test-gradle-environment:
-#    needs: ubuntu-setup-gradle-environment
-#    strategy:
-#      matrix:
-#        os: [ ubuntu-latest ]
-#        gradle-version: [ "7.4", "7.4.1", "7.5", "7.5.1", "7.6", "7.6.1", "8.0", "8.0.1", "8.0.2" ]
-#      fail-fast: false
-#    uses: ./.github/workflows/unit-test.yml                       # Starting with the ./. means it is a local reusable workflow
-#    with:
-#      os: ${{ matrix.os }}
-#      gradle-version: ${{ matrix.gradle-version }}
-#
-#  ubuntu-int-test-gradle-environment:
-#    needs: ubuntu-setup-gradle-environment
-#    strategy:
-#      matrix:
-#        os: [ ubuntu-latest ]
-#        gradle-version: [ "7.4", "7.4.1", "7.5", "7.5.1", "7.6", "7.6.1", "8.0", "8.0.1", "8.0.2" ]
-#      fail-fast: false
-#    uses: ./.github/workflows/int-test.yml                        # Starting with the ./. means it is a local reusable workflow
-#    with:
-#      os: ${{ matrix.os }}
-#      gradle-version: ${{ matrix.gradle-version }}
-#
-#  ubuntu-checkstyle-gradle-environment:
-#    needs: ubuntu-setup-gradle-environment
-#    strategy:
-#      matrix:
-#        os: [ ubuntu-latest ]
-#        gradle-version: [ "7.4", "7.4.1", "7.5", "7.5.1", "7.6", "7.6.1", "8.0", "8.0.1", "8.0.2" ]
-#      fail-fast: false
-#    uses: ./.github/workflows/checkstyle.yml                      # Starting with the ./. means it is a local reusable workflow
-#    with:
-#      os: ${{ matrix.os }}
-#      gradle-version: ${{ matrix.gradle-version }}
-#
-#  ubuntu-pmd-gradle-environment:
-#    needs: ubuntu-setup-gradle-environment
-#    strategy:
-#      matrix:
-#        os: [ ubuntu-latest ]
-#        gradle-version: [ "7.4", "7.4.1", "7.5", "7.5.1", "7.6", "7.6.1", "8.0", "8.0.1", "8.0.2" ]
-#      fail-fast: false
-#    uses: ./.github/workflows/pmd.yml                             # Starting with the ./. means it is a local reusable workflow
-#    with:
-#      os: ${{ matrix.os }}
-#      gradle-version: ${{ matrix.gradle-version }}
+  ubuntu-unit-test-gradle-environment:
+    needs: ubuntu-setup-gradle-environment
+    strategy:
+      matrix:
+        os: [ ubuntu-latest ]
+        gradle-version: ["7.6.1"] #[ "7.4", "7.4.1", "7.5", "7.5.1", "7.6", "7.6.1", "8.0", "8.0.1", "8.0.2" ]
+      fail-fast: false
+    uses: ./.github/workflows/unit-test.yml                       # Starting with the ./. means it is a local reusable workflow
+    with:
+      os: ${{ matrix.os }}
+      gradle-version: ${{ matrix.gradle-version }}
+
+  ubuntu-int-test-gradle-environment:
+    needs: ubuntu-setup-gradle-environment
+    strategy:
+      matrix:
+        os: [ ubuntu-latest ]
+        gradle-version: ["7.6.1"] #[ "7.4", "7.4.1", "7.5", "7.5.1", "7.6", "7.6.1", "8.0", "8.0.1", "8.0.2" ]
+      fail-fast: false
+    uses: ./.github/workflows/int-test.yml                        # Starting with the ./. means it is a local reusable workflow
+    with:
+      os: ${{ matrix.os }}
+      gradle-version: ${{ matrix.gradle-version }}
+
+  ubuntu-checkstyle-gradle-environment:
+    needs: ubuntu-setup-gradle-environment
+    strategy:
+      matrix:
+        os: [ ubuntu-latest ]
+        gradle-version: ["7.6.1"] #[ "7.4", "7.4.1", "7.5", "7.5.1", "7.6", "7.6.1", "8.0", "8.0.1", "8.0.2" ]
+      fail-fast: false
+    uses: ./.github/workflows/checkstyle.yml                      # Starting with the ./. means it is a local reusable workflow
+    with:
+      os: ${{ matrix.os }}
+      gradle-version: ${{ matrix.gradle-version }}
+
+  ubuntu-pmd-gradle-environment:
+    needs: ubuntu-setup-gradle-environment
+    strategy:
+      matrix:
+        os: [ ubuntu-latest ]
+        gradle-version: ["7.6.1"] #[ "7.4", "7.4.1", "7.5", "7.5.1", "7.6", "7.6.1", "8.0", "8.0.1", "8.0.2" ]
+      fail-fast: false
+    uses: ./.github/workflows/pmd.yml                             # Starting with the ./. means it is a local reusable workflow
+    with:
+      os: ${{ matrix.os }}
+      gradle-version: ${{ matrix.gradle-version }}
 
 #  windows-setup-gradle-environment:
 #    if: github.event.pull_request.draft == false

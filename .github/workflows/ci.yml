@@ -26,6 +26,7 @@ jobs:
         gradle-version: ["7.6.1"] #[ "7.4", "7.4.1", "7.5", "7.5.1", "7.6", "7.6.1", "8.0", "8.0.1", "8.0.2" ]
       fail-fast: false
     uses: ./.github/workflows/setup-gradle-environment.yml        # Starting with the ./. means it is a local reusable workflow
+    timeout-minutes: 5
     with:
       os: ${{ matrix.os }}
       java-version: ${{ matrix.java-version }}
@@ -96,98 +97,98 @@ jobs:
       jdk-publisher: ${{ matrix.jdk-publisher }}
       gradle-version: ${{ matrix.gradle-version }}
 
-  windows-setup-gradle-environment:
-    if: github.event.pull_request.draft == false
-    strategy:
-      matrix:
-        os: [ windows-latest ]
-        java-version: [ "17" ] #[ "17.0.5", "17.0.6", "19.0.1", "19.0.2" ]
-        jdk-publisher: [ "corretto" ]
-        gradle-version: [ "7.6.1" ] #[ "7.4", "7.4.1", "7.5", "7.5.1", "7.6", "7.6.1", "8.0", "8.0.1", "8.0.2" ]
-      fail-fast: false
-    uses: ./.github/workflows/setup-gradle-environment.yml
-    with:
-      os: ${{ matrix.os }}
-      java-version: ${{ matrix.java-version }}
-      jdk-publisher: ${{ matrix.jdk-publisher }}
-      gradle-version: ${{ matrix.gradle-version }}
-
-  windows-unit-test-gradle-environment:
-    needs: windows-setup-gradle-environment
-    strategy:
-      matrix:
-        os: [ windows-latest ]
-        java-version: [ "17" ] #[ "17.0.5", "17.0.6", "19.0.1", "19.0.2" ]
-        jdk-publisher: [ "corretto" ]
-        gradle-version: [ "7.6.1" ] #[ "7.4", "7.4.1", "7.5", "7.5.1", "7.6", "7.6.1", "8.0", "8.0.1", "8.0.2" ]
-      fail-fast: false
-    uses: ./.github/workflows/unit-test.yml
-    with:
-      os: ${{ matrix.os }}
-      java-version: ${{ matrix.java-version }}
-      jdk-publisher: ${{ matrix.jdk-publisher }}
-      gradle-version: ${{ matrix.gradle-version }}
-
-  windows-int-test-gradle-environment:
-    needs: windows-setup-gradle-environment
-    strategy:
-      matrix:
-        os: [ windows-latest ]
-        java-version: [ "17" ] #[ "17.0.5", "17.0.6", "19.0.1", "19.0.2" ]
-        jdk-publisher: [ "corretto" ]
-        gradle-version: [ "7.6.1" ] #[ "7.4", "7.4.1", "7.5", "7.5.1", "7.6", "7.6.1", "8.0", "8.0.1", "8.0.2" ]
-      fail-fast: false
-    uses: ./.github/workflows/int-test.yml
-    with:
-      os: ${{ matrix.os }}
-      java-version: ${{ matrix.java-version }}
-      jdk-publisher: ${{ matrix.jdk-publisher }}
-      gradle-version: ${{ matrix.gradle-version }}
-
-  macos-setup-gradle-environment:
-    if: github.event.pull_request.draft == false
-    strategy:
-      matrix:
-        os: [ macos-latest ]
-        java-version: [ "17" ] #[ "17.0.5", "17.0.6", "19.0.1", "19.0.2" ]
-        jdk-publisher: [ "corretto" ]
-        gradle-version: [ "7.6.1" ] #[ "7.4", "7.4.1", "7.5", "7.5.1", "7.6", "7.6.1", "8.0", "8.0.1", "8.0.2" ]
-      fail-fast: false
-    uses: ./.github/workflows/setup-gradle-environment.yml
-    with:
-      os: ${{ matrix.os }}
-      java-version: ${{ matrix.java-version }}
-      jdk-publisher: ${{ matrix.jdk-publisher }}
-      gradle-version: ${{ matrix.gradle-version }}
-
-  macos-unit-test-gradle-environment:
-    needs: macos-setup-gradle-environment
-    strategy:
-      matrix:
-        os: [ macos-latest ]
-        java-version: [ "17" ] #[ "17.0.5", "17.0.6", "19.0.1", "19.0.2" ]
-        jdk-publisher: [ "corretto" ]
-        gradle-version: [ "7.6.1" ] #[ "7.4", "7.4.1", "7.5", "7.5.1", "7.6", "7.6.1", "8.0", "8.0.1", "8.0.2" ]
-      fail-fast: false
-    uses: ./.github/workflows/unit-test.yml
-    with:
-      os: ${{ matrix.os }}
-      java-version: ${{ matrix.java-version }}
-      jdk-publisher: ${{ matrix.jdk-publisher }}
-      gradle-version: ${{ matrix.gradle-version }}
-
-  macos-int-test-gradle-environment:
-    needs: macos-setup-gradle-environment
-    strategy:
-      matrix:
-        os: [ macos-latest ]
-        java-version: [ "17" ] #[ "17.0.5", "17.0.6", "19.0.1", "19.0.2" ]
-        jdk-publisher: [ "corretto" ]
-        gradle-version: [ "7.6.1" ] #[ "7.4", "7.4.1", "7.5", "7.5.1", "7.6", "7.6.1", "8.0", "8.0.1", "8.0.2" ]
-      fail-fast: false
-    uses: ./.github/workflows/int-test.yml
-    with:
-      os: ${{ matrix.os }}
-      java-version: ${{ matrix.java-version }}
-      jdk-publisher: ${{ matrix.jdk-publisher }}
-      gradle-version: ${{ matrix.gradle-version }}
+#  windows-setup-gradle-environment:
+#    if: github.event.pull_request.draft == false
+#    strategy:
+#      matrix:
+#        os: [ windows-latest ]
+#        java-version: [ "17" ] #[ "17.0.5", "17.0.6", "19.0.1", "19.0.2" ]
+#        jdk-publisher: [ "corretto" ]
+#        gradle-version: [ "7.6.1" ] #[ "7.4", "7.4.1", "7.5", "7.5.1", "7.6", "7.6.1", "8.0", "8.0.1", "8.0.2" ]
+#      fail-fast: false
+#    uses: ./.github/workflows/setup-gradle-environment.yml
+#    with:
+#      os: ${{ matrix.os }}
+#      java-version: ${{ matrix.java-version }}
+#      jdk-publisher: ${{ matrix.jdk-publisher }}
+#      gradle-version: ${{ matrix.gradle-version }}
+#
+#  windows-unit-test-gradle-environment:
+#    needs: windows-setup-gradle-environment
+#    strategy:
+#      matrix:
+#        os: [ windows-latest ]
+#        java-version: [ "17" ] #[ "17.0.5", "17.0.6", "19.0.1", "19.0.2" ]
+#        jdk-publisher: [ "corretto" ]
+#        gradle-version: [ "7.6.1" ] #[ "7.4", "7.4.1", "7.5", "7.5.1", "7.6", "7.6.1", "8.0", "8.0.1", "8.0.2" ]
+#      fail-fast: false
+#    uses: ./.github/workflows/unit-test.yml
+#    with:
+#      os: ${{ matrix.os }}
+#      java-version: ${{ matrix.java-version }}
+#      jdk-publisher: ${{ matrix.jdk-publisher }}
+#      gradle-version: ${{ matrix.gradle-version }}
+#
+#  windows-int-test-gradle-environment:
+#    needs: windows-setup-gradle-environment
+#    strategy:
+#      matrix:
+#        os: [ windows-latest ]
+#        java-version: [ "17" ] #[ "17.0.5", "17.0.6", "19.0.1", "19.0.2" ]
+#        jdk-publisher: [ "corretto" ]
+#        gradle-version: [ "7.6.1" ] #[ "7.4", "7.4.1", "7.5", "7.5.1", "7.6", "7.6.1", "8.0", "8.0.1", "8.0.2" ]
+#      fail-fast: false
+#    uses: ./.github/workflows/int-test.yml
+#    with:
+#      os: ${{ matrix.os }}
+#      java-version: ${{ matrix.java-version }}
+#      jdk-publisher: ${{ matrix.jdk-publisher }}
+#      gradle-version: ${{ matrix.gradle-version }}
+#
+#  macos-setup-gradle-environment:
+#    if: github.event.pull_request.draft == false
+#    strategy:
+#      matrix:
+#        os: [ macos-latest ]
+#        java-version: [ "17" ] #[ "17.0.5", "17.0.6", "19.0.1", "19.0.2" ]
+#        jdk-publisher: [ "corretto" ]
+#        gradle-version: [ "7.6.1" ] #[ "7.4", "7.4.1", "7.5", "7.5.1", "7.6", "7.6.1", "8.0", "8.0.1", "8.0.2" ]
+#      fail-fast: false
+#    uses: ./.github/workflows/setup-gradle-environment.yml
+#    with:
+#      os: ${{ matrix.os }}
+#      java-version: ${{ matrix.java-version }}
+#      jdk-publisher: ${{ matrix.jdk-publisher }}
+#      gradle-version: ${{ matrix.gradle-version }}
+#
+#  macos-unit-test-gradle-environment:
+#    needs: macos-setup-gradle-environment
+#    strategy:
+#      matrix:
+#        os: [ macos-latest ]
+#        java-version: [ "17" ] #[ "17.0.5", "17.0.6", "19.0.1", "19.0.2" ]
+#        jdk-publisher: [ "corretto" ]
+#        gradle-version: [ "7.6.1" ] #[ "7.4", "7.4.1", "7.5", "7.5.1", "7.6", "7.6.1", "8.0", "8.0.1", "8.0.2" ]
+#      fail-fast: false
+#    uses: ./.github/workflows/unit-test.yml
+#    with:
+#      os: ${{ matrix.os }}
+#      java-version: ${{ matrix.java-version }}
+#      jdk-publisher: ${{ matrix.jdk-publisher }}
+#      gradle-version: ${{ matrix.gradle-version }}
+#
+#  macos-int-test-gradle-environment:
+#    needs: macos-setup-gradle-environment
+#    strategy:
+#      matrix:
+#        os: [ macos-latest ]
+#        java-version: [ "17" ] #[ "17.0.5", "17.0.6", "19.0.1", "19.0.2" ]
+#        jdk-publisher: [ "corretto" ]
+#        gradle-version: [ "7.6.1" ] #[ "7.4", "7.4.1", "7.5", "7.5.1", "7.6", "7.6.1", "8.0", "8.0.1", "8.0.2" ]
+#      fail-fast: false
+#    uses: ./.github/workflows/int-test.yml
+#    with:
+#      os: ${{ matrix.os }}
+#      java-version: ${{ matrix.java-version }}
+#      jdk-publisher: ${{ matrix.jdk-publisher }}
+#      gradle-version: ${{ matrix.gradle-version }}

@@ -1,6 +1,6 @@
 name: Static Type Check (PMD)[Linting]
 
-on:
+on:                                         # Called from the ci.yml
   workflow_call:                            # Allows file to be triggered from another workflow
     inputs:
       os:

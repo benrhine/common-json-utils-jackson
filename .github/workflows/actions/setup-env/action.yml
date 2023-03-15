@@ -1,4 +1,4 @@
-name: "Configure Gradle Wrapper"
+name: "Configure Java and Gradle Wrapper"
 description: "Download and configure the desired gradle wrapper"
 inputs:
   cache_version:

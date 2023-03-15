@@ -1,6 +1,6 @@
 name: Publish Artifact
 
-on:
+on:                                                       # Runs on the completion of ci.yml
   workflow_run:
     workflows: [ 'Full CI Build']
     types:

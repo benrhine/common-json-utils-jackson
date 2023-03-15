@@ -1,6 +1,6 @@
-name: Setup the Gradle Environment
+name: Environment Setup
 
-on:
+on:                                                       # Called from the ci.yml
   workflow_call:
     inputs:
       os:
@@ -15,6 +15,8 @@ on:
         description: 'Gradle version'
         type: string
         required: true
+
+# This file is not allowed to be manually run as there is no purpose
 
 jobs:
   environment-setup:

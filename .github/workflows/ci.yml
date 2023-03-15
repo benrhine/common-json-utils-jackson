@@ -17,7 +17,6 @@ concurrency:
 
 jobs:
   ubuntu-setup-gradle-environment:
-    timeout-minutes: 120
     if: github.event.pull_request.draft == false
     strategy:
       matrix:
@@ -28,6 +27,7 @@ jobs:
     with:
       os: ${{ matrix.os }}
       gradle-version: ${{ matrix.gradle-version }}
+    timeout-minutes: 120
 
   ubuntu-unit-test-gradle-environment:
     needs: ubuntu-setup-gradle-environment

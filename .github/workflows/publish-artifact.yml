@@ -29,8 +29,9 @@ on:                                                       # Runs on the completi
 
 jobs:
   on-success-publish:
-    runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
     defaults:
       run:
         shell: bash
@@ -40,10 +41,10 @@ jobs:
         id: config-java-gradle                            # Apply easy to reference id
         uses: ./.github/workflows/actions/setup-env       # Path reference to local action
         with:                                             # Pass in versions for testing
-          os: ${{ inputs.os }}
-          java-version: ${{ inputs.java-version }}
-          jdk-publisher: ${{ inputs.jdk-publisher }}
-          gradle-version: ${{ inputs.gradle-version }}
+          os: 'ubuntu-latest'
+          java-version: '17'
+          jdk-publisher: 'corretto'
+          gradle-version: '7.6.1'
 
       - name: Save application version for Slack Alert    # Collect the new version number
         run: |

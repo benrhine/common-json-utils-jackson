@@ -76,12 +76,12 @@ on:                                         # Called from the ci.yml
 jobs:
   unit-tests:
     runs-on: ${{ inputs.os }}
+    timeout-minutes: 15
     env:
       # on MAC OS, we need to set this environment variable
       # to fix problems with the fork() calls (see this thread
       # for more information: http://sealiesoftware.com/blog/archive/2017/6/5/Objective-C_and_fork_in_macOS_1013.html)
       OBJC_DISABLE_INITIALIZE_FORK_SAFETY: "YES"
-
     defaults:
       run:
         shell: bash

@@ -18,24 +18,24 @@ println "*********** VERSION CONTROL DETAILS **********\n"
 //}
 //
 // Stop the build if VCS credentials are not present
-if (!vcsUser || !vcsPass) {
-    println "\nCan not build application without VCS User/Pass"
-    throw new RuntimeException("Can not build application without VCS User/Pass")
-} else {
-    println "\n*****************************************"
-    println "*** VCS credentials are present ***"
-    println "*****************************************"
-}
+//if (!vcsUser || !vcsPass) {
+//    println "\nCan not build application without VCS User/Pass"
+//    throw new RuntimeException("Can not build application without VCS User/Pass")
+//} else {
+//    println "\n*****************************************"
+//    println "*** VCS credentials are present ***"
+//    println "*****************************************"
+//}
 
 repositories {
     mavenCentral()
     mavenLocal()
     // If you need to define custom maven repo
-    maven {
-        url = uri("https://maven.pkg.github.com/benrhine/libraries")
-        credentials {
-            username = project.findProperty("gpr.user") as String ?: vcsUser
-            password = project.findProperty("gpr.key") as String ?: vcsPass
-        }
-    }
+//    maven {
+//        url = uri("https://maven.pkg.github.com/benrhine/libraries")
+//        credentials {
+//            username = project.findProperty("gpr.user") as String ?: vcsUser
+//            password = project.findProperty("gpr.key") as String ?: vcsPass
+//        }
+//    }
 }

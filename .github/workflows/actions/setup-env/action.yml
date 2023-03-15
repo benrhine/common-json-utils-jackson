@@ -4,16 +4,20 @@ inputs:
   cache_version:
     description: 'TODO figure out if this works for me'
     required: true
+  os:
+    description: 'OS'
+    required: true
+    default: 'ubuntu-latest'
   java-version:
     description: 'Java version'
     required: true
     default: '17'
+  jdk-publisher:
+    description: 'JDK Publisher'
+    required: true
+    default: 'corretto'
   gradle-version:
     description: 'Gradle version'
-    required: true
-    default: 'ubuntu-latest'
-  os:
-    description: 'OS'
     required: true
     default: '7.6.1'
 
@@ -28,11 +32,11 @@ runs:
       shell: bash
       run: ./gradlew -v
     - uses: gradle/wrapper-validation-action@v1
-    - name: Set up JDK 17
+    - name: Set up JDK ${{ inputs.java-version }}
       uses: actions/setup-java@v3
       with:
         java-version: ${{ inputs.java-version }}
-        distribution: 'corretto' # List of supported jvms https://github.com/actions/setup-java
-        server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
-        settings-path: ${{ github.workspace }} # location for the settings.xml file
+        distribution: ${{ inputs.jdk-publisher }}         # List of supported jvms https://github.com/actions/setup-java
+        server-id: github                                 # Value of the distributionManagement/repository/id field of the pom.xml
+        settings-path: ${{ github.workspace }}            # location for the settings.xml file
         cache: gradle

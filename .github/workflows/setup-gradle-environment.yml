@@ -11,6 +11,10 @@ on:                                                       # Called from the ci.y
         description: 'Java version'
         type: string
         required: true
+      jdk-publisher:
+        description: 'JDK Publisher'
+        type: string
+        required: true
       gradle-version:
         description: 'Gradle version'
         type: string

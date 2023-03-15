@@ -11,6 +11,10 @@ on:                                         # Called from the ci.yml
         description: 'Java version'
         type: string
         required: true
+      jdk-publisher:
+        description: 'JDK Publisher'
+        type: string
+        required: true
       gradle-version:
         description: 'Gradle version'
         type: string
@@ -31,15 +35,39 @@ on:                                         # Called from the ci.yml
         description: 'Java version'
         type: choice
         options:
-          - '17'
+          - '17.0.5'
+          - '17.0.6'
+          - '19.0.1'
+          - '19.0.2'
         required: false
         default: '17'
+      jdk-publisher:
+        description: 'JDK Publisher'
+        type: choice
+        options:
+          - 'temurin'
+          - 'zulu'
+          - 'adopt'
+          - 'adopt-openj9'
+          - 'liberica'
+          - 'microsoft'
+          - 'corretto'
+          - 'oracle'
+        required: false
+        default: 'corretto'
       gradle-version:
         description: 'Gradle version'
         type: choice
         options:
+          - '7.4'
+          - "7.4.1"
+          - '7.5'
+          - '7.5.1'
           - '7.6'
           - '7.6.1'
+          - '8.0'
+          - '8.0.1'
+          - '8.0.2'
         required: false
         default: '7.6'
 

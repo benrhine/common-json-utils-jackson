@@ -23,6 +23,7 @@ jobs:
         os: [ ubuntu-latest ]
         gradle-version: [ "7.6", "7.6.1" ]
       fail-fast: false
+    timeout-minutes: 120
     uses: benrhine/common-json-utils-jackson/.github/workflows/setup-gradle-environment.yml@main
     with:
       os: ${{ matrix.os }}

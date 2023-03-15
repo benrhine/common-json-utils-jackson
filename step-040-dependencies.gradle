@@ -1,0 +1,21 @@
+/** --------------------------------------------------------------------------------------------------------------------
+ * Dependencies: Configuration for dependencyManagement and dependency blocks.
+ * - GLOBAL EXCLUSIONS ARE CONFIGURED IN - step-10-additional-config.gradle
+ * ------------------------------------------------------------------------------------------------------------------ */
+dependencies {
+    // -----------------------------------------------------------------------------------------------------------------
+    // Inheritable:
+    // -----------------------------------------------------------------------------------------------------------------
+    api 'com.fasterxml.jackson.core:jackson-databind:2.14.2'
+    // -----------------------------------------------------------------------------------------------------------------
+    // Spring: - this is only in support of integration testing
+    // -----------------------------------------------------------------------------------------------------------------
+    implementation 'org.springframework.boot:spring-boot-starter-web:3.0.4' // ONLY FOR INTEGRATION TESTING
+    // -----------------------------------------------------------------------------------------------------------------
+    // Test:
+    // -----------------------------------------------------------------------------------------------------------------
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:3.0.4'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
+    testImplementation 'org.mockito:mockito-junit-jupiter:5.2.0'
+    testImplementation "org.mockito:mockito-core:5.2.0"
+}

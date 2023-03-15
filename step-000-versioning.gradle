@@ -1,4 +1,4 @@
-// step-001-versioning.gradle
+// step-000-versioning.gradle
 
 import static java.lang.Boolean.parseBoolean
 import static java.lang.Integer.parseInt

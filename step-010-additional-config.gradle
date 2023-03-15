@@ -1,0 +1,42 @@
+/** --------------------------------------------------------------------------------------------------------------------
+ * Additional Code Sources and Config: Configuration of additional source sets and global excludes.
+ * This enables the project to run component/API tests external to the initial build to enable full API testing on the
+ * pipeline build.
+ * ------------------------------------------------------------------------------------------------------------------ */
+sourceSets {
+    // Add additional source sets here
+}
+
+configurations {
+    // This comes generated from spring initializer
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+
+    implementation {
+        // This excludes legacy junit (4) to ensure all test imports are the correct
+        // junit 5 imports
+        exclude group: 'junit', module: 'junit'
+    }
+
+    testImplementation {
+        exclude group: 'com.vaadin.external.google', module: 'android-json'
+    }
+}
+
+// Add ability to reference gradle.properties in application.yml
+processResources {
+    filesMatching('**/**/application.yml') {
+        expand(project.properties)
+    }
+}
+
+// -----------------------------------------------------------------------------------------------------------------
+// Build Scan: This enables the build to programmatically accept the ToS of running a build scan.
+// -----------------------------------------------------------------------------------------------------------------
+if (hasProperty('buildScan')) {
+    buildScan {
+        termsOfServiceUrl = 'https://gradle.com/terms-of-service'
+        termsOfServiceAgree = 'yes'
+    }
+}

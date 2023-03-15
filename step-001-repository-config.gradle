@@ -1,0 +1,41 @@
+/** --------------------------------------------------------------------------------------------------------------------
+ * Repository Config: Configuration for external maven and nexus repositories the application is looking for.
+ * - requires a bit bucket username and password
+ * ------------------------------------------------------------------------------------------------------------------ */
+
+println "*********** VERSION CONTROL DETAILS **********\n"
+
+//if (bbUserUuid != null) {
+//    println "Current VCS build triggered by user: $bbUserUuid"
+//} else {
+//    println "Current VCS build triggered by an unknown initiator (This more than likely indicates a local build)"
+//}
+//
+//if (bbBranch != null) {
+//    println "Current VCS branch: $bbBranch"
+//} else {
+//    println "Current VCS branch is unknown"
+//}
+//
+// Stop the build if VCS credentials are not present
+if (!vcsUser || !vcsPass) {
+    println "\nCan not build application without VCS User/Pass"
+    throw new RuntimeException("Can not build application without VCS User/Pass")
+} else {
+    println "\n*****************************************"
+    println "*** VCS credentials are present ***"
+    println "*****************************************"
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    // If you need to define custom maven repo
+    maven {
+        url = uri("https://maven.pkg.github.com/benrhine/libraries")
+        credentials {
+            username = project.findProperty("gpr.user") as String ?: vcsUser
+            password = project.findProperty("gpr.key") as String ?: vcsPass
+        }
+    }
+}

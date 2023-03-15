@@ -1,4 +1,4 @@
-name: Build, Lint, Unit Test, Integration Test, and Publish
+name: Full CI Build
 
 on:
   workflow_dispatch:
@@ -147,10 +147,3 @@ jobs:
 #    with:
 #      os: ${{ matrix.os }}
 #      gradle-version: ${{ matrix.gradle-version }}
-
-#  publish-artifact:
-#    #needs: ubuntu-setup-gradle-environment, windows-setup-gradle-environment, macos-setup-gradle-environment, ubuntu-unit-test-gradle-environment, ubuntu-int-test-gradle-environment, windows-unit-test-gradle-environment, windows-int-test-gradle-environment, macos-unit-test-gradle-environment, macos-int-test-gradle-environment
-#    uses: benrhine/common-json-utils-jackson/.github/workflows/int-test.yml@main
-#    with:
-#      os: ubuntu-latest
-#      gradle-version: "7.6.1"

@@ -64,18 +64,59 @@ if (ext.allowEnvOverride) {
 	ext.pmdHtml                             = parseBoolean("$pmdHtmlReportEnabled")
 }
 
-group = 'com.benrhine'
-sourceCompatibility = '17'
+ext.unitTestBuildColor = ""
+ext.intTestBuildColor = ""
+// Define containers to hold test result summaries
+ext.testsUnitResults = []                                               // Container for unit tests summaries
+ext.testsAdminIntResults  = []                                          // Container for int tests summaries
+ext.testsFlowableIntResults  = []                                       // Container for int tests summaries
+ext.testsIntResults  = []                                               // Container for int tests summaries
+ext.testsThinResults = []                                               // Container for thin tests summaries
+ext.testsLoadResults = []                                               // Container for load tests summaries
 
-apply from: "step-001-versioning.gradle"
+println "@@@@@@@@@@@@@@ BUILDING EXAMPLE @@@@@@@@@@@@@\n"
 
+apply from: "step-000-versioning.gradle"
+/** --------------------------------------------------------------------------------------------------------------------
+ * Repository Config: Configuration for external maven and nexus repositories the application is looking for.
+ * - requires a bit bucket username and password
+ * ------------------------------------------------------------------------------------------------------------------ */
+apply from: "step-001-repository-config.gradle"
 
-configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+println "\n********* APPLICATION OVERRIDES *********\n"
+
+if (allowEnvOverride) {
+	println "Application settings ENV override enabled. Trying to load application properties from the environment " +
+			"before falling back to gradle.properties by default"
+	println "Use this feature if you want to override application versioning, testing, or reporting defaults."
+	println "Please see the README for more details"
+} else {
+	println "Application settings defaulted from gradle.properties values"
+	println "To override application defaults from the environment set an environment variable named " +
+			"ENV_OVERRIDE_ENABLED to TRUE"
+	println "Setting ENV_OVERRIDE_ENABLED=TRUE will allow the app to pick up other specified ENV's that may be " +
+			"configured for various purposes."
+	println "Please see the README for more details"
 }
+/** --------------------------------------------------------------------------------------------------------------------
+ * Application Config: Configuration for the following ...
+ * - application - mainClass path
+ * - springBoot - add the build and git info to the actuator endpoints
+ * - bootRun
+ * ------------------------------------------------------------------------------------------------------------------ */
+apply from: 'step-005-application-config.gradle'
 
+// Print the current git branch
+getCurrentGitBranch()
+// Print the current git hash
+getCurrentGitCommit()
+
+/** --------------------------------------------------------------------------------------------------------------------
+ * Additional Code Sources and Config: Configuration of additional source sets and global excludes.
+ * This enables the project to run component/API tests external to the initial build to enable full API testing on the
+ * pipeline build.
+ * ------------------------------------------------------------------------------------------------------------------ */
+apply from: 'step-010-additional-config.gradle'
 /** --------------------------------------------------------------------------------------------------------------------
  * Additional Tasks: This import needs to be before anything that that may call tasks defined here.
  * ------------------------------------------------------------------------------------------------------------------ */
@@ -91,84 +132,69 @@ apply from: 'step-025-jacoco-config.gradle'
  * ------------------------------------------------------------------------------------------------------------------ */
 apply from: 'step-030-checkstyle-config.gradle'
 apply from: 'step-035-pmd-config.gradle'
+/** --------------------------------------------------------------------------------------------------------------------
+ * Dependencies: Configuration for dependencyManagement and dependency blocks.
+ * ------------------------------------------------------------------------------------------------------------------ */
+apply from: 'step-040-dependencies.gradle'
+/** --------------------------------------------------------------------------------------------------------------------
+ * gitChangelogTask:
+ *
+ * Build a nice changelog of all the git commits so its easy to see what has been done for a release. If we are building
+ * the main branch a single changelog will be created (this may need to be updated as we determine what branch will be
+ * our release branch). If the changelog task is run from a branch it will create the changelog in the `branch-changelog`
+ * directory with the branch name and the timestamp for clarity.
+ *
+ * Note: The template may need some basic tweaks as we develop
+ * `./gradlew gitChangelogTask`
+ * ------------------------------------------------------------------------------------------------------------------ */
+//task gitChangelogTask(type: GitChangelogTask) {
+//	println "\n*** GENERATING APPLICATION CHANGELOG ***\n"
+//	final timestamp = getDate()
+//	fromRepo = file("$projectDir")
+//	toRef = getCurrentGitBranch()
+//
+//	if (toRef == "$gitReleaseBranchName" as String) {
+//		file = new File("${changelogDefaultFileName}.md")
+//	} else {
+//		deleteFilesOlderThanNDays(parseInt("$changelogBranchLogTTLDays"), "$changelogBranchLogLocation")
+//		file = new File("${changelogBranchLogLocation}/${changelogDefaultFileName}-${toRef}-${timestamp}.md")
+//	}
+//	templateContent = """
+//{{#tags}}
+//## {{name}}
+// {{#issues}}
+//  {{#hasIssue}}
+//   {{#hasLink}}
+//### {{name}} [{{issue}}]({{link}}) {{title}} {{#hasIssueType}} *{{issueType}}* {{/hasIssueType}} {{#hasLabels}} {{#labels}} *{{.}}* {{/labels}} {{/hasLabels}}
+//   {{/hasLink}}
+//   {{^hasLink}}
+//### {{name}} {{issue}} {{title}} {{#hasIssueType}} *{{issueType}}* {{/hasIssueType}} {{#hasLabels}} {{#labels}} *{{.}}* {{/labels}} {{/hasLabels}}
+//   {{/hasLink}}
+//  {{/hasIssue}}
+//  {{^hasIssue}}
+//### {{name}}
+//  {{/hasIssue}}
+//
+//  {{#commits}}
+//**{{{messageTitle}}}**
+//
+//{{#messageBodyItems}}
+// * {{.}}
+//{{/messageBodyItems}}
+//
+//[{{hash}}](https://bitbucket.org/{{ownerName}}/{{repoName}}/commit/{{hash}}) {{authorName}} *{{commitTime}}*
+//
+//  {{/commits}}
+//
+// {{/issues}}
+//{{/tags}}
+// """
+//}
 
-repositories {
-	mavenCentral()
-}
-
-
-dependencies {
-	api 'com.fasterxml.jackson.core:jackson-databind:2.14.2'
-	implementation 'org.springframework.boot:spring-boot-starter-web:3.0.4' // ONLY FOR INTEGRATION TESTING
-	testImplementation 'org.springframework.boot:spring-boot-starter-test:3.0.4'
-	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
-	testImplementation 'org.mockito:mockito-junit-jupiter:5.2.0'
-	testImplementation "org.mockito:mockito-core:5.2.0"
-}
-
-test { testTask ->
-	maxParallelForks ((env == "LOCAL") ? 5 : parseInt("$intParallelism"))           // Set max threads to speed up tests
-	reports.html.required = htmlReportsEnabled                                      // Configured in gradle.properties
-//    ignoreFailures = true
-
-	testLogging { logging ->
-		events TestLogEvent.FAILED,
-				TestLogEvent.SKIPPED,
-				TestLogEvent.STANDARD_OUT,
-				TestLogEvent.STANDARD_ERROR
-
-		exceptionFormat TestExceptionFormat.FULL
-		showExceptions true
-		showCauses true
-		showStackTraces true
-		showStandardStreams(parseBoolean("$testShowStandardStreams"))   // Show standard out and standard error of the test JVM(s) on the console
-	}
-
-	useJUnitPlatform {
-		if (!parseBoolean("$testAllEnabled")) {
-			// To run all available tests with ./gradlew clean test set `testAllEnabled` in gradle.properties to true
-			excludeTags "int", "slow", "thin", "load", "flowableInt", "adminInt"
-		}
-	}
-
-	jacoco {
-		enabled = jacocoEnabled                                         // Configured in gradle.properties
-	}
-	finalizedBy unitTestReports                                         // instructs the tests to finish by generating a coverage report
-}
-
-task integrationTest(type: Test) {
-	maxParallelForks ((env == "LOCAL") ? 5 : parseInt("$intParallelism"))   // Set max threads to speed up tests
-	reports.html.required = htmlReportsEnabled                              // Configured in gradle.properties
-	description = 'Runs integration tests'
-	group = 'verification'
-
-	testLogging { logging ->
-		events TestLogEvent.FAILED, TestLogEvent.SKIPPED, TestLogEvent.STANDARD_OUT, TestLogEvent.STANDARD_ERROR
-
-		exceptionFormat TestExceptionFormat.FULL
-		showExceptions true
-		showCauses true
-		showStackTraces true
-		showStandardStreams(parseBoolean("$testShowStandardStreams"))   // Show standard out and standard error of the test JVM(s) on the console
-	}
-
-	useJUnitPlatform {
-		includeTags 'int'
-	}
-
-	jacoco {
-		enabled = jacocoEnabled                                         // Configured in gradle.properties
-	}
-	finalizedBy integrationTestReports                                  // instructs the tests to finish by generating a coverage report
-}
-
-if (hasProperty('buildScan')) {
-	buildScan {
-		termsOfServiceUrl = 'https://gradle.com/terms-of-service'
-		termsOfServiceAgree = 'yes'
-	}
-}
+/** --------------------------------------------------------------------------------------------------------------------
+ * Test Configuration: Configuration for unit, int, thin, load tests
+ * ------------------------------------------------------------------------------------------------------------------ */
+apply from: 'step-045-test-config.gradle'
 
 /** --------------------------------------------------------------------------------------------------------------------
  * Publish: Modern way to publish artifacts using the maven-publish plugin (Gradle 7+)

@@ -17,7 +17,7 @@ plugins {
 	id 'maven-publish'																					// https://docs.gradle.org/current/userguide/publishing_maven.html
 	id "checkstyle"                                                                                     // https://docs.gradle.org/current/userguide/checkstyle_plugin.html
 	id "pmd"                                                                                            // https://docs.gradle.org/current/userguide/pmd_plugin.html
-	// id "com.adarshr.test-logger"                            version "$testLoggerPlugin"                 // https://plugins.gradle.org/plugin/com.adarshr.test-logger
+	id "com.adarshr.test-logger"                            version "$testLoggerPlugin"                 // https://plugins.gradle.org/plugin/com.adarshr.test-logger
 	// id "se.bjurr.gitchangelog.git-changelog-gradle-plugin"  version "$gitChangelogPlugin"               // https://plugins.gradle.org/plugin/se.bjurr.gitchangelog.git-changelog-gradle-plugin
 	// id "org.sonarqube"                                      version "$sonarQubePlugin"
 
@@ -138,9 +138,29 @@ test { testTask ->
 }
 
 task integrationTest(type: Test) {
+	maxParallelForks ((env == "LOCAL") ? 5 : parseInt("$intParallelism"))   // Set max threads to speed up tests
+	reports.html.required = htmlReportsEnabled                              // Configured in gradle.properties
+	description = 'Runs integration tests'
+	group = 'verification'
+
+	testLogging { logging ->
+		events TestLogEvent.FAILED, TestLogEvent.SKIPPED, TestLogEvent.STANDARD_OUT, TestLogEvent.STANDARD_ERROR
+
+		exceptionFormat TestExceptionFormat.FULL
+		showExceptions true
+		showCauses true
+		showStackTraces true
+		showStandardStreams(parseBoolean("$testShowStandardStreams"))   // Show standard out and standard error of the test JVM(s) on the console
+	}
+
 	useJUnitPlatform {
 		includeTags 'int'
 	}
+
+	jacoco {
+		enabled = jacocoEnabled                                         // Configured in gradle.properties
+	}
+	finalizedBy integrationTestReports                                  // instructs the tests to finish by generating a coverage report
 }
 
 if (hasProperty('buildScan')) {

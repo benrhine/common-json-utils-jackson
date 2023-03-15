@@ -73,4 +73,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: Integration Test report
-          path: build/reports/tests/test
+          path: build/intJacoco.zip

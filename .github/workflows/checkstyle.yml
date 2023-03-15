@@ -60,11 +60,6 @@ jobs:
           server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
           settings-path: ${{ github.workspace }} # location for the settings.xml file
           cache: gradle
-      #      - name: Setup environment
-      #        uses: benrhine/common-json-utils-jackson/.github/workflows/setup-gradle-environment.yml@main
-      #        with:
-      #          gradle-version: ${{ inputs.gradle-version }}
-      #          os: ${{ inputs.os }}
 
       - name: Checkstyle
         run: ./gradlew checkstyleMain
@@ -72,5 +67,5 @@ jobs:
       - name: Archive unit test report
         uses: actions/upload-artifact@v3
         with:
-          name: Unit Test report
+          name: Checkstyle report
           path: build/reports/checkstyle

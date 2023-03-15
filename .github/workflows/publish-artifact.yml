@@ -14,15 +14,15 @@ jobs:
       run:
         shell: bash
     steps:
-      - uses: actions/checkout@v3
-      - name: Configure Java and Gradle Version
-        id: config-java-gradle
-        uses: ./.github/workflows/actions/setup-env
-        with:
+      - uses: actions/checkout@v3                         # Checkout is required for local action
+      - name: Configure Java and Gradle Version           # Apply a human-readable name
+        id: config-java-gradle                            # Apply easy to reference id
+        uses: ./.github/workflows/actions/setup-env       # Path reference to local action
+        with:                                             # Pass in versions for testing
           gradle-version: ${{ inputs.gradle-version }}
           os: ${{ inputs.os }}
 
-      - name: Save application version for Slack Alert
+      - name: Save application version for Slack Alert    # Collect the new version number
         run: |
           echo "app_version=$(./gradlew printVersion -Pci=true -Psnapshot=true | tail -n 4 | head -n 1 )" >> $GITHUB_ENV
         env: # These must be passed in, in every step
@@ -30,13 +30,13 @@ jobs:
           BUILD_RUN_NUMBER: ${{ github.run_number }}
           BUILD_RUN_ATTEMPT: ${{ github.run_attempt }}
 
-      - name: Check that the app version was set
+      - name: Check that the app version was set          # Print new version number to build for reference
         run: |
           echo "${{ env.app_version }}"
 
       # The USERNAME and TOKEN need to correspond to the credentials environment variables used in
       # the publishing section of your build.gradle
-      - name: Publish to GitHub Packages
+      - name: Publish to GitHub Packages                  # Publish new artifact with updated version number
         run: ./gradlew publish -Pci=true -Psnapshot=true
         env: # These must be passed in, in every step
           BUILD_RUN_ID: ${{ github.run_id }}
@@ -46,7 +46,7 @@ jobs:
           # I don't understand why the default token is not sufficient
           GITHUB_TOKEN: ${{ secrets.VCS_PERSONAL_TOKEN }}
 
-      - name: Slack Notification
+      - name: Slack Notification                          # Alert new version has been published
         uses: rtCamp/action-slack-notify@v2
         env:
           #        SLACK_CHANNEL: general

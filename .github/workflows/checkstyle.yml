@@ -7,6 +7,10 @@ on:
         description: 'OS'
         type: string
         required: true
+      java-version:
+        description: 'Java version'
+        type: string
+        required: true
       gradle-version:
         description: 'Gradle version'
         type: string
@@ -23,6 +27,13 @@ on:
           - windows-latest
         required: false
         default: 'ubuntu-latest'
+      java-version:
+        description: 'Java version'
+        type: choice
+        options:
+          - '17'
+        required: false
+        default: '17'
       gradle-version:
         description: 'Gradle version'
         type: choice
@@ -46,18 +57,18 @@ jobs:
         shell: bash
 
     steps:
-      - uses: actions/checkout@v3
-      - name: Configure Java and Gradle Version
-        id: config-java-gradle
-        uses: ./.github/workflows/actions/setup-env
-        with:
+      - uses: actions/checkout@v3                         # Checkout is required for local action
+      - name: Configure Java and Gradle Version           # Apply a human-readable name
+        id: config-java-gradle                            # Apply easy to reference id
+        uses: ./.github/workflows/actions/setup-env       # Path reference to local action
+        with:                                             # Pass in versions for testing
           gradle-version: ${{ inputs.gradle-version }}
           os: ${{ inputs.os }}
 
-      - name: Checkstyle
+      - name: Checkstyle                                  # Run static type check (Lint)
         run: ./gradlew checkstyleMain
 
-      - name: Archive unit test report
+      - name: Archive unit test report                    # Upload report
         uses: actions/upload-artifact@v3
         with:
           name: Checkstyle report

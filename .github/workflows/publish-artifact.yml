@@ -2,7 +2,7 @@ name: Publish Artifact
 
 on:
   workflow_run:
-    workflows: [ 'Build, Lint, Unit Test, Integration Test, and Publish']
+    workflows: [ 'Full CI Build']
     types:
       - completed
 

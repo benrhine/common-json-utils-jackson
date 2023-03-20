@@ -90,7 +90,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: Publish All Markdown
       - uses: kovetskiy/mark
-        run : |
+        with : |
           for file in $(find -type f -name '*.md'); do
             echo "> Sync $file";
             mark -u $CONFLUENCE_USER -p $CONFLUENCE_PASS -b $CONFLUENCE_URL -f $file || exit 1;

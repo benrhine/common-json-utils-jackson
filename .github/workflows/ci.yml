@@ -104,7 +104,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: gradle/wrapper-validation-action@v1
       - name: Set up JDK 17
-        uses: kovetskiy/mark@latest
+        uses: kovetskiy/mark@8.8
 #    uses: ./.github/workflows/publish-documentation.yml                             # Starting with the ./. means it is a local reusable workflow
 #    with:
 #      os: ${{ matrix.os }}

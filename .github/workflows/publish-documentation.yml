@@ -92,9 +92,10 @@ jobs:
       - name: Checkout Mark tool
         uses: kovetskiy/mark@8.8
       - name: Publish all markdown
-        run: |
-          for file in $(find -type f -name '*.md'); do
-            echo "> Sync $file";
-            mark -u $CONFLUENCE_USER -p $CONFLUENCE_PASS -b $CONFLUENCE_URL -f $file || exit 1;
-            echo;
-          done
+        run: mark -u $CONFLUENCE_USER -p $CONFLUENCE_PASS -b $CONFLUENCE_URL -f ./documentation/test.md
+#        run: |
+#          for file in $(find -type f -name '*.md'); do
+#            echo "> Sync $file";
+#            mark -u $CONFLUENCE_USER -p $CONFLUENCE_PASS -b $CONFLUENCE_URL -f $file || exit 1;
+#            echo;
+#          done

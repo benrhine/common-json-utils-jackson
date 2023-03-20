@@ -98,19 +98,19 @@ jobs:
 
   ubuntu-publish-doc-to-confluence-gradle-environment:
     needs: ubuntu-setup-gradle-environment
-    name: publishi things
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: gradle/wrapper-validation-action@v1
-      - name: Set up JDK 17
-        uses: kovetskiy/mark@8.8
-#    uses: ./.github/workflows/publish-documentation.yml                             # Starting with the ./. means it is a local reusable workflow
-#    with:
-#      os: ${{ matrix.os }}
-#      java-version: ${{ matrix.java-version }}
-#      jdk-publisher: ${{ matrix.jdk-publisher }}
-#      gradle-version: ${{ matrix.gradle-version }}
+    strategy:
+      matrix:
+        os: [ ubuntu-latest ]
+        java-version: [ "17" ]                                     # ONLY TAKES MAJOR VERSION
+        jdk-publisher: [ "corretto" ]
+        gradle-version: [ "7.6.1" ]
+      fail-fast: false
+    uses: ./.github/workflows/publish-documentation.yml                             # Starting with the ./. means it is a local reusable workflow
+    with:
+      os: ${{ matrix.os }}
+      java-version: ${{ matrix.java-version }}
+      jdk-publisher: ${{ matrix.jdk-publisher }}
+      gradle-version: ${{ matrix.gradle-version }}
 
 #  windows-setup-gradle-environment:
 #    if: github.event.pull_request.draft == false

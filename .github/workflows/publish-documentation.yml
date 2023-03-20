@@ -89,7 +89,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Publish All Markdown
-        uses: kovetskiy/mark
+        uses: kovetskiy/mark:latest
         with : |
           for file in $(find -type f -name '*.md'); do
             echo "> Sync $file";

@@ -87,10 +87,12 @@ jobs:
         shell: bash
 
     steps:
-      - uses: actions/checkout@v3
-      - name: Publish All Markdown
+      - name: Check out code
+        uses: actions/checkout@v3
+      - name: Checkout Mark tool
         uses: kovetskiy/mark@latest
-        with : |
+      - name: Publish all markdown
+        run: |
           for file in $(find -type f -name '*.md'); do
             echo "> Sync $file";
             mark -u $CONFLUENCE_USER -p $CONFLUENCE_PASS -b $CONFLUENCE_URL -f $file || exit 1;

@@ -98,6 +98,8 @@ jobs:
 
   ubuntu-publish-doc-to-confluence-gradle-environment:
     needs: ubuntu-setup-gradle-environment
+    name: publishi things
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: gradle/wrapper-validation-action@v1

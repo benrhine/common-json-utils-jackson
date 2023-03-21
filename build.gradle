@@ -20,7 +20,7 @@ plugins {
 	id "com.adarshr.test-logger"                            version "$testLoggerPlugin"                 // https://plugins.gradle.org/plugin/com.adarshr.test-logger
 	// id "se.bjurr.gitchangelog.git-changelog-gradle-plugin"  version "$gitChangelogPlugin"               // https://plugins.gradle.org/plugin/se.bjurr.gitchangelog.git-changelog-gradle-plugin
 	// id "org.sonarqube"                                      version "$sonarQubePlugin"
-
+	id "com.benrhine.semantic-versioning-with-build-number" version "0.0.2"
 }
 
 /** --------------------------------------------------------------------------------------------------------------------
@@ -76,7 +76,6 @@ ext.testsLoadResults = []                                               // Conta
 
 println "@@@@@@@@@@@@@@ BUILDING EXAMPLE @@@@@@@@@@@@@\n"
 
-apply from: "step-000-versioning.gradle"
 /** --------------------------------------------------------------------------------------------------------------------
  * Repository Config: Configuration for external maven and nexus repositories the application is looking for.
  * - requires a bit bucket username and password

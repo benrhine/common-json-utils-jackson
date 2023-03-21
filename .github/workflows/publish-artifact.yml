@@ -48,7 +48,7 @@ jobs:
 
       - name: Save application version for Slack Alert    # Collect the new version number
         run: |
-          echo "app_version=$(./gradlew printVersion -Pci=true -Psnapshot=true | tail -n 4 | head -n 1 )" >> $GITHUB_ENV
+          echo "app_version=$(./gradlew printVersion | tail -n 4 | head -n 1 )" >> $GITHUB_ENV
         env: # These must be passed in, in every step
           BUILD_RUN_ID: ${{ github.run_id }}
           BUILD_RUN_NUMBER: ${{ github.run_number }}
@@ -61,7 +61,7 @@ jobs:
       # The USERNAME and TOKEN need to correspond to the credentials environment variables used in
       # the publishing section of your build.gradle
       - name: Publish to GitHub Packages                  # Publish new artifact with updated version number
-        run: ./gradlew publish -Pci=true -Psnapshot=true
+        run: ./gradlew publish
         env: # These must be passed in, in every step
           BUILD_RUN_ID: ${{ github.run_id }}
           BUILD_RUN_NUMBER: ${{ github.run_number }}

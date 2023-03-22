@@ -77,6 +77,13 @@ if (!slackToken) {
 }
 // End Slack alert
 
+versionConfig {
+    remoteBuild = true
+    ciBuildNumberEnvVarName = "BUILD_RUN_NUMBER" //BITBUCKET_BUILD_NUMBER
+    artifactType = "SNAPSHOT"
+    customVersionPropertiesPath = "$projectDir/version.properties"
+}
+
 
 // Add build info to actuator
 //springBoot {
